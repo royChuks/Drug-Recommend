@@ -1,0 +1,151 @@
+disease_name,disease_category,icd_code,drug_generic_name,drug_class,evidence_source,age_group
+Chronic Kidney Disease,Renal,N18,Lisinopril,ACE Inhibitor,KDIGO,adult
+Chronic Kidney Disease,Renal,N18,Losartan,ARB,KDIGO,pediatrics
+Acute Kidney Injury,Renal,N17,Furosemide,Loop Diuretic,KDIGO,geriatric
+Nephrotic Syndrome,Renal,N04,Prednisone,Corticosteroid,KDIGO,adult
+Glomerulonephritis,Renal,N05,Cyclophosphamide,Immunosuppressant,KDIGO,geriatric
+Hypertension,Cardiovascular,I10,Amlodipine,Calcium Channel Blocker,ACC/AHA,geriatric
+Hypertension,Cardiovascular,I10,Hydrochlorothiazide,Thiazide Diuretic,ACC/AHA,adult
+Heart Failure (HFrEF),Cardiovascular,I50,Sacubitril/Valsartan,ARNI,ACC/AHA,geriatric
+Heart Failure (HFrEF),Cardiovascular,I50,Spironolactone,MRA,ACC/AHA,geriatric
+Atrial Fibrillation,Cardiovascular,I48,Apixaban,Anticoagulant,ESC,pediatrics
+Epilepsy,CNS,G40,Levetiracetam,Anticonvulsant,NICE,geriatric
+Epilepsy,CNS,G40,Sodium Valproate,Anticonvulsant,NICE,pediatrics
+Major Depressive Disorder,CNS,F32,Sertraline,SSRI,NICE,pediatrics
+Parkinson’s Disease,CNS,G20,Levodopa/Carbidopa,Dopaminergic,NICE,adult
+Schizophrenia,CNS,F20,Risperidone,Atypical Antipsychotic,NICE,geriatric
+Type 2 Diabetes Mellitus,Endocrine,E11,Metformin,Biguanide,ADA,adult
+Type 2 Diabetes Mellitus,Endocrine,E11,Empagliflozin,SGLT2 Inhibitor,ADA,pediatrics
+Asthma,Respiratory,J45,Salbutamol,SABA,GINA,adult
+COPD,Respiratory,J44,Tiotropium,Anticholinergic,GOLD,pediatrics
+Bacterial Infection,Infectious,A49,Amoxicillin,Antibiotic,WHO,pediatrics
+COVID-19,Infectious,U07.1,Remdesivir,Antiviral,WHO,pediatrics
+Osteoporosis,Endocrine,M81,Alendronate,Bisphosphonate,NOF,geriatric
+Rheumatoid Arthritis,Immunologic,M06,Methotrexate,DMARD,ACR,adult
+Migraine,CNS,G43,Sumatriptan,Triptan,NICE,adult
+Peptic Ulcer,Gastrointestinal,K25,Omeprazole,Proton Pump Inhibitor,ESPGHAN,pediatrics
+Alzheimer's Disease,CNS,G30,Donepezil,Cholinesterase Inhibitor,NICE,geriatric
+Tuberculosis,Infectious,A15,Isoniazid,Antibiotic,WHO,adult
+Pneumonia,Infectious,J18,Azithromycin,Antibiotic,WHO,geriatric
+Psoriasis,Immunologic,L40,Adalimumab,Biologic,ACR,geriatric
+Breast Cancer,Oncology,C50,Trastuzumab,Monoclonal Antibody,ASCO,adult
+Colorectal Cancer,Oncology,C18,Capecitabine,Antimetabolite,ASCO,adult
+Non-Hodgkin Lymphoma,Oncology,C82,Rituximab,Monoclonal Antibody,ASCO,geriatric
+Gout,Endocrine,M10,Febuxostat,Xanthine Oxidase Inhibitor,ACR,adult
+Multiple Sclerosis,CNS,G35,Fingolimod,Immunomodulator,NICE,adult
+Ankylosing Spondylitis,Immunologic,M45,Etanercept,Biologic,ACR,pediatrics
+Ulcerative Colitis,Gastrointestinal,K51,Mesalazine,Aminosalicylate,ESPGHAN,geriatric
+Crohn's Disease,Gastrointestinal,K50,Infliximab,Biologic,ESPGHAN,geriatric
+Chronic Hepatitis B,Infectious,B18,Entecavir,Antiviral,EASL,adult
+Chronic Hepatitis C,Infectious,B18,Sofosbuvir,Antiviral,EASL,adult
+Hyperlipidemia,Cardiovascular,E78,Atorvastatin,Statin,ACC/AHA,adult
+Hyperthyroidism,Endocrine,E05,Methimazole,Thionamide,ATA,pediatrics
+Hypothyroidism,Endocrine,E03,Levothyroxine,Thyroid Hormone,ATA,geriatric
+Pulmonary Embolism,Cardiovascular,I26,Rivaroxaban,Anticoagulant,ESC,pediatrics
+Deep Vein Thrombosis,Cardiovascular,I80,Dalteparin,Anticoagulant,ESC,adult
+Systemic Lupus Erythematosus,Immunologic,M32,Hydroxychloroquine,Antimalarial,EULAR,pediatrics
+Acute Pancreatitis,Gastrointestinal,K85,Octreotide,Somatostatin Analog,AGA,pediatrics
+Gastric Cancer,Oncology,C16,Sunitinib,Tyrosine Kinase Inhibitor,ASCO,pediatrics
+Chronic Myeloid Leukemia,Oncology,C92,Imatinib,Tyrosine Kinase Inhibitor,ASCO,geriatric
+Eczema,Immunologic,L20,Crisaborole,Phosphodiesterase-4 Inhibitor,ACR,geriatric
+Cystic Fibrosis,Respiratory,E84,Ivacaftor,CFTR Modulator,CFF,adult
+Bronchiectasis,Respiratory,J47,Aztreonam,Antibiotic,GOLD,adult
+Influenza,Infectious,J10,Oseltamivir,Antiviral,CDC,pediatrics
+HIV Infection,Infectious,B20,Efavirenz,Antiretroviral,WHO,pediatrics
+Polycystic Ovary Syndrome,Endocrine,E28,Clomiphene,Selective Estrogen Receptor Modulator,ESHRE,geriatric
+Endometriosis,Reproductive,N80,Leuprorelin,GnRH Agonist,ESHRE,pediatrics
+Prostate Cancer,Oncology,C61,Enzalutamide,Antiandrogen,ASCO,pediatrics
+Melanoma,Oncology,C43,Vemurafenib,Tyrosine Kinase Inhibitor,ASCO,adult
+Lung Cancer,Oncology,C34,Crizotinib,Tyrosine Kinase Inhibitor,ASCO,geriatric
+Pancreatic Cancer,Oncology,C25,Abraxane,Taxane,ASCO,adult
+Meningitis,Infectious,G00,Ceftriaxone,Antibiotic,WHO,geriatric
+Lyme Disease,Infectious,A69,Doxycycline,Antibiotic,CDC,pediatrics
+Acute Lymphoblastic Leukemia,Oncology,C91.0,Asparaginase,Enzyme,ASCO,pediatrics
+Chronic Lymphocytic Leukemia,Oncology,C91.1,Ibrutinib,Tyrosine Kinase Inhibitor,ASCO,adult
+Myelodysplastic Syndromes,Oncology,D46,Azacitidine,Hypomethylating Agent,ASCO,geriatric
+Malaria,Infectious,B50,Artemether/Lumefantrine,Antimalarial,WHO,adult
+Amoebiasis,Infectious,A06,Metronidazole,Antiparasitic,WHO,adult
+Giardiasis,Infectious,A07,Tinidazole,Antiparasitic,WHO,adult
+Celiac Disease,Gastrointestinal,K90.0,Gluten-Free Diet,Dietary,ESPGHAN,geriatric
+Obesity,Endocrine,E66,Orlistat,Lipase Inhibitor,WHO,pediatrics
+Narcolepsy,CNS,G47.4,Modafinil,Wakefulness-Promoting Agent,NICE,geriatric
+Restless Legs Syndrome,CNS,G25.81,Pramipexole,Dopaminergic,NICE,geriatric
+Hereditary Hemochromatosis,Hematologic,E83.1,Deferasirox,Iron Chelator,ASH,geriatric
+Sickle Cell Disease,Hematologic,D57,Hydroxyurea,Antimetabolite,ASH,adult
+Hemophilia,Hematologic,D66,Desmopressin,Antidiuretic,ASH,geriatric
+von Willebrand Disease,Hematologic,D68.0,Tranexamic Acid,Antifibrinolytic,ASH,pediatrics
+Acute Coronary Syndrome,Cardiovascular,I24,Aspirin,Antiplatelet,ACC/AHA,geriatric
+Stroke,Cardiovascular,I63,Alteplase,Thrombolytic,ESC,geriatric
+Peripheral Artery Disease,Cardiovascular,I73,Clopidogrel,Antiplatelet,ACC/AHA,adult
+Chronic Obstructive Pulmonary Disease,Respiratory,J44,Roflumilast,Phosphodiesterase-4 Inhibitor,GOLD,pediatrics
+Interstitial Lung Disease,Respiratory,J84,Nintedanib,Tyrosine Kinase Inhibitor,ERS,geriatric
+Pulmonary Arterial Hypertension,Cardiovascular,I27,Bosentan,Endothelin Receptor Antagonist,ESC,adult
+Sarcoidosis,Immunologic,D86,Prednisolone,Corticosteroid,ERS,geriatric
+Myasthenia Gravis,CNS,G70.0,Pyridostigmine,Acetylcholinesterase Inhibitor,NICE,adult
+Amyotrophic Lateral Sclerosis,CNS,G12.2,Riluzole,Glutamate Inhibitor,NICE,pediatrics
+Tourette Syndrome,CNS,F95,Haloperidol,Typical Antipsychotic,NICE,geriatric
+Obsessive-Compulsive Disorder,CNS,F42,Fluoxetine,SSRI,NICE,adult
+Bipolar Disorder,CNS,F31,Lithium,Mood Stabilizer,NICE,adult
+Anxiety Disorders,CNS,F41,Buspirone,Anxiolytic,NICE,adult
+Attention Deficit Hyperactivity Disorder,CNS,F90,Methylphenidate,Central Nervous System Stimulant,NICE,geriatric
+Autism Spectrum Disorder,CNS,F84,Risperidone,Atypical Antipsychotic,NICE,geriatric
+Addison's Disease,Endocrine,E27.1,Fludrocortisone,Corticosteroid,ADA,pediatrics
+Cushing's Syndrome,Endocrine,E24,Metyrapone,Steroidogenesis Inhibitor,ADA,adult
+Pheochromocytoma,Endocrine,E27,Phenoxybenzamine,Alpha Blocker,ATA,geriatric
+Hyperparathyroidism,Endocrine,E21,Cinacalcet,Calcimimetic,ATA,geriatric
+Hypoparathyroidism,Endocrine,E20,Calcitriol,Vitamin D Analog,ATA,pediatrics
+Paget's Disease of Bone,Endocrine,M88,Zoledronic Acid,Bisphosphonate,NOF,geriatric
+Osteomalacia,Endocrine,M83,Cholecalciferol,Vitamin D Analog,NOF,pediatrics
+Rickets,Endocrine,E55,Ergocalciferol,Vitamin D Analog,NOF,geriatric
+Hypercalcemia,Endocrine,E83.5,Denosumab,Monoclonal Antibody,NOF,geriatric
+Neutropenia,Hematologic,D70,Filgrastim,Colony Stimulating Factor,ASH,geriatric
+Thrombocytopenia,Hematologic,D69,Romiplostim,Thrombopoietin Receptor Agonist,ASH,pediatrics
+Polycythemia Vera,Hematologic,D45,Hydroxyurea,Antimetabolite,ASH,geriatric
+Essential Thrombocythemia,Hematologic,D47.3,Anagrelide,Platelet Synthesis Inhibitor,ASH,adult
+Hemolytic Uremic Syndrome,Hematologic,D59,Plasma Exchange,Therapy,ASH,pediatrics
+Thalassemia,Hematologic,D56,Deferoxamine,Iron Chelator,ASH,geriatric
+Aplastic Anemia,Hematologic,D61,Antithymocyte Globulin,Immunosuppressant,ASH,pediatrics
+Sideroblastic Anemia,Hematologic,D64.1,Pyridoxine,Vitamin,ASH,geriatric
+Heparin-Induced Thrombocytopenia,Hematologic,D75.82,Argatroban,Direct Thrombin Inhibitor,ASH,pediatrics
+Idiopathic Pulmonary Fibrosis,Respiratory,J84.112,Pirfenidone,Antifibrotic,ERS,geriatric
+Allergic Rhinitis,Respiratory,J30.1,Loratadine,Antihistamine,GINA,geriatric
+Chronic Sinusitis,Respiratory,J32,Fluticasone,Corticosteroid,GINA,geriatric
+Acute Bronchitis,Respiratory,J20,Clarithromycin,Antibiotic,GINA,adult
+Laryngitis,Respiratory,J04.0,Phenoxymethylpenicillin,Antibiotic,GINA,adult
+Otitis Media,Respiratory,H66,Amoxicillin,Antibiotic,GINA,adult
+Conjunctivitis,Infectious,H10.9,Tobramycin,Antibiotic,WHO,pediatrics
+Herpes Simplex Infection,Infectious,B00,Acyclovir,Antiviral,WHO,adult
+Chickenpox,Infectious,B01,Valacyclovir,Antiviral,WHO,pediatrics
+Measles,Infectious,B05,Vitamin A,Supplement,WHO,pediatrics
+Mumps,Infectious,B26,Mumps Vaccine,Vaccine,WHO,pediatrics
+Rubella,Infectious,B06,Rubella Vaccine,Vaccine,WHO,pediatrics
+Tetanus,Infectious,A35,Tetanus Toxoid,Vaccine,WHO,adult
+Diphtheria,Infectious,A36,Diphtheria Antitoxin,Antitoxin,WHO,adult
+Pertussis,Infectious,A37,Pertussis Vaccine,Vaccine,WHO,pediatrics
+Poliomyelitis,Infectious,A80,Polio Vaccine,Vaccine,WHO,pediatrics
+Rabies,Infectious,A82,Rabies Vaccine,Vaccine,WHO,pediatrics
+Leprosy,Infectious,A30,Dapsone,Antibiotic,WHO,adult
+Syphilis,Infectious,A53,Benzathine Penicillin G,Antibiotic,WHO,pediatrics
+Gonorrhea,Infectious,A54,Cefixime,Antibiotic,WHO,adult
+Chlamydia,Infectious,A56,Azithromycin,Antibiotic,WHO,geriatric
+Trichomoniasis,Infectious,A59,Metronidazole,Antiparasitic,WHO,pediatrics
+Candidiasis,Infectious,B37,Fluconazole,Antifungal,WHO,pediatrics
+Cryptococcosis,Infectious,B45,Amphotericin B,Antifungal,WHO,geriatric
+Histoplasmosis,Infectious,B39,Itraconazole,Antifungal,WHO,pediatrics
+Pneumocystis Pneumonia,Infectious,B59,Trimethoprim-Sulfamethoxazole,Antibiotic,WHO,pediatrics
+Toxoplasmosis,Infectious,B58,Pyrimethamine,Sulfonamide,WHO,adult
+Schistosomiasis,Infectious,B65,Praziquantel,Antiparasitic,WHO,geriatric
+Filariasis,Infectious,B74,Diethylcarbamazine,Antiparasitic,WHO,geriatric
+Leishmaniasis,Infectious,B55,Miltefosine,Antiparasitic,WHO,pediatrics
+Dracunculiasis,Infectious,B72,Niridazole,Antiparasitic,WHO,pediatrics
+Echinococcosis,Infectious,B67,Albendazole,Antiparasitic,WHO,adult
+Onchocerciasis,Infectious,B73,Ivermectin,Antiparasitic,WHO,geriatric
+Taeniasis,Infectious,B68,Niclosamide,Antiparasitic,WHO,adult
+Strongyloidiasis,Infectious,B78,Thiabendazole,Antiparasitic,WHO,geriatric
+Trichuriasis,Infectious,B79,Albendazole,Antiparasitic,WHO,geriatric
+Ascariasis,Infectious,B77,Mebendazole,Antiparasitic,WHO,pediatrics
+Toxocariasis,Infectious,B83,Diethylcarbamazine,Antiparasitic,WHO,adult
+Fascioliasis,Infectious,B66,Triclabendazole,Antiparasitic,WHO,pediatrics
+Opisthorchiasis,Infectious,B66.2,Albendazole,Antiparasitic,WHO,geriatric
+Clonorchiasis,Infectious,B66.1,Albendazole,Antiparasitic,WHO,pediatrics
+Paragonimiasis,Infectious,B66.4,Triclabendazole,Antiparasitic,WHO,geriatric

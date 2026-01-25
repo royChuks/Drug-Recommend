@@ -1,0 +1,9 @@
+project/
+├── backend/
+│   ├── main.py               # FastAPI backend
+│   ├── model.py              # ML logic
+│   ├── disease_drug_dataset.csv
+│   └── requirements.txt
+│
+├── frontend/
+│   └── index.html            # Material UI (CDN)
