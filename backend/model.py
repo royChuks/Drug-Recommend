@@ -201,31 +201,68 @@ def predict_drugs(disease: str, threshold=0.02, algo='lr', top_k_fallback=3, age
     # Sort by confidence (already sorted if fallback, but ensure it)
     return sorted(results, key=lambda x: x["confidence"], reverse=True)
 
-def get_model_metrics(algo='lr'):
-    """Get model evaluation metrics"""
+def get_disease_specific_indices(disease: str):
+    """Get training data indices for a specific disease"""
+    load_data()
+    disease_lower = disease.lower().strip()
+    disease_mask = df['disease_name'].str.lower().str.strip() == disease_lower
+    indices = np.where(disease_mask.values)[0]
+    
+    # Map grouped data indices to original X,y indices
+    grouped_disease_idx = grouped[grouped['disease_name'] == disease_lower].index
+    return grouped_disease_idx.tolist() if len(grouped_disease_idx) > 0 else None
+
+def get_model_metrics(algo='lr', disease: str = None):
+    """Get model evaluation metrics. If disease specified, metrics are for that disease only."""
     model = get_model(algo)
+    
+    # Use disease-specific data if provided
+    if disease:
+        disease_idx = get_disease_specific_indices(disease)
+        if disease_idx is None or len(disease_idx) == 0:
+            return {"error": f"Disease '{disease}' not found in training data", "algorithm": algo}
+        
+        # Get disease-specific training data
+        X_disease = X[disease_idx]
+        y_disease = y[disease_idx]
+        scope = f"disease: {disease}"
+    else:
+        X_disease = X
+        y_disease = y
+        scope = "all diseases"
+    
     try:
-        y_pred = model.predict(X)
+        y_pred = model.predict(X_disease)
     except Exception as e:
         print("Metric prediction error", e)
         return {"error": str(e)}
     
-    precision = precision_score(y, y_pred, average='micro', zero_division=0)
-    recall = recall_score(y, y_pred, average='micro', zero_division=0)
-    f1 = f1_score(y, y_pred, average='micro', zero_division=0)
-    hamming = hamming_loss(y, y_pred)
-    conf_matrix = multilabel_confusion_matrix(y, y_pred).tolist()
+    precision = precision_score(y_disease, y_pred, average='micro', zero_division=0)
+    recall = recall_score(y_disease, y_pred, average='micro', zero_division=0)
+    f1 = f1_score(y_disease, y_pred, average='micro', zero_division=0)
+    hamming = hamming_loss(y_disease, y_pred)
+    conf_matrix = multilabel_confusion_matrix(y_disease, y_pred).tolist()
     
     # Confusion matrix analysis
-    conf_matrix_array = multilabel_confusion_matrix(y, y_pred)
+    conf_matrix_array = multilabel_confusion_matrix(y_disease, y_pred)
     conf_matrices_detailed = []
 
-    # Per-label analysis from confusion matrices
+    # Per-label analysis from confusion matrices with comprehensive metrics
     for i, cm in enumerate(conf_matrix_array):
         tn, fp, fn, tp = cm.ravel()
         label_precision = tp / (tp + fp) if (tp + fp) > 0 else 0
         label_recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+        label_specificity = tn / (tn + fp) if (tn + fp) > 0 else 0
         label_f1 = 2 * (label_precision * label_recall) / (label_precision + label_recall) if (label_precision + label_recall) > 0 else 0
+        
+        # Additional metrics
+        label_accuracy = (tp + tn) / (tp + tn + fp + fn) if (tp + tn + fp + fn) > 0 else 0
+        false_positive_rate = fp / (fp + tn) if (fp + tn) > 0 else 0
+        false_negative_rate = fn / (fn + tp) if (fn + tp) > 0 else 0
+        
+        # Diagnostic odds ratio (DOR) - higher is better
+        dor = (tp * tn) / (fp * fn) if (fp * fn) > 0 else 0
+        dor = 0.0 if np.isinf(dor) else dor
 
         conf_matrices_detailed.append({
             "label": mlb.classes_[i],
@@ -234,49 +271,130 @@ def get_model_metrics(algo='lr'):
             "fp": int(fp),
             "fn": int(fn),
             "tn": int(tn),
-            "precision": label_precision,
-            "recall": label_recall,
-            "f1_score": label_f1
+            "precision": float(label_precision),
+            "recall": float(label_recall),
+            "f1_score": float(label_f1),
+            "specificity": float(label_specificity),
+            "accuracy": float(label_accuracy),
+            "false_positive_rate": float(false_positive_rate),
+            "false_negative_rate": float(false_negative_rate),
+            "diagnostic_odds_ratio": float(dor),
+            "support": int(tp + fn)  # Total actual positives for this label
         })
 
     # Accuracy calculation for multilabel
-    accuracy = np.mean(np.any(y == y_pred, axis=1))
+    accuracy = np.mean(np.any(y_disease == y_pred, axis=1))
 
-    # Correlation analysis
+    # Correlation analysis - Enhanced
     correlations = {}
 
     # Feature-target correlation (how well the text features predict each drug)
     try:
-        y_pred_proba = model.predict_proba(X)
+        y_pred_proba = model.predict_proba(X_disease)
         feature_importance = {}
+        X_dense = X_disease.toarray()
+        
         for i, drug in enumerate(mlb.classes_):
             # Calculate correlation between feature vector and drug predictions
             drug_predictions = y_pred_proba[:, i]
+            
             # Correlation with individual features
             feature_correlations = []
-            X_dense = X.toarray()
+            feature_correlation_details = []
+            
             for j in range(X_dense.shape[1]):
-                corr = np.corrcoef(X_dense[:, j], drug_predictions)[0, 1]
-                if not np.isnan(corr):
-                    feature_correlations.append(corr)
+                try:
+                    corr = np.corrcoef(X_dense[:, j], drug_predictions)[0, 1]
+                    # Only include valid correlations (not NaN or Inf)
+                    if not np.isnan(corr) and not np.isinf(corr):
+                        feature_correlations.append(float(corr))
+                        feature_correlation_details.append({
+                            "feature_index": int(j),
+                            "correlation": float(corr),
+                            "abs_correlation": float(abs(corr))
+                        })
+                except:
+                    pass
+            
+            # Sort by absolute correlation value
+            feature_correlation_details.sort(key=lambda x: x["abs_correlation"], reverse=True)
+            top_features = feature_correlation_details[:5] if len(feature_correlation_details) >= 5 else feature_correlation_details
 
+            # Calculate safe statistics (handle empty list)
+            mean_corr = float(np.mean(feature_correlations)) if feature_correlations else 0.0
+            max_corr = float(np.max(feature_correlations)) if feature_correlations else 0.0
+            min_corr = float(np.min(feature_correlations)) if feature_correlations else 0.0
+            std_corr = float(np.std(feature_correlations)) if feature_correlations else 0.0
+            
+            # Ensure values are JSON-safe
             feature_importance[drug] = {
-                "mean_correlation": float(np.mean(feature_correlations)) if feature_correlations else 0.0,
-                "max_correlation": float(np.max(feature_correlations)) if feature_correlations else 0.0,
-                "correlation_std": float(np.std(feature_correlations)) if feature_correlations else 0.0
+                "mean_correlation": 0.0 if np.isnan(mean_corr) or np.isinf(mean_corr) else mean_corr,
+                "max_correlation": 0.0 if np.isnan(max_corr) or np.isinf(max_corr) else max_corr,
+                "min_correlation": 0.0 if np.isnan(min_corr) or np.isinf(min_corr) else min_corr,
+                "correlation_std": 0.0 if np.isnan(std_corr) or np.isinf(std_corr) else std_corr,
+                "num_features_analyzed": len(feature_correlations),
+                "top_correlated_features": top_features,
+                "correlation_strength": "Strong" if mean_corr > 0.5 else ("Moderate" if mean_corr > 0.3 else "Weak")
             }
-    except Exception:
+    except Exception as e:
         # Fallback if predict_proba is not available
-        feature_importance = {drug: {"mean_correlation": 0.0, "max_correlation": 0.0, "correlation_std": 0.0}
-                             for drug in mlb.classes_}
+        print(f"Correlation analysis error: {e}")
+        feature_importance = {drug: {
+            "mean_correlation": 0.0,
+            "max_correlation": 0.0,
+            "min_correlation": 0.0,
+            "correlation_std": 0.0,
+            "num_features_analyzed": 0,
+            "top_correlated_features": [],
+            "correlation_strength": "Weak"
+        } for drug in mlb.classes_}
 
-    # Drug recommendation correlation (how often drugs are recommended together)
-    drug_cooccurrence = np.dot(y.T, y) / len(y)
-    drug_correlation_matrix = np.corrcoef(drug_cooccurrence)
+    # Drug-drug correlation and similarity analysis
+    try:
+        drug_cooccurrence = np.dot(y_disease.T, y_disease) / len(y_disease)
+        # Replace any NaN or Inf values in cooccurrence
+        drug_cooccurrence = np.nan_to_num(drug_cooccurrence, nan=0.0, posinf=0.0, neginf=0.0)
+        
+        # Normalize cooccurrence to similarity scores (0-1)
+        drug_cooccurrence_normalized = drug_cooccurrence / (np.max(drug_cooccurrence) + 1e-10)
+        
+        # Calculate correlation matrix safely
+        try:
+            drug_correlation_matrix = np.corrcoef(drug_cooccurrence)
+            # Replace NaN/Inf in correlation matrix
+            drug_correlation_matrix = np.nan_to_num(drug_correlation_matrix, nan=0.0, posinf=0.0, neginf=0.0)
+        except:
+            # If corrcoef fails, use identity matrix as fallback
+            drug_correlation_matrix = np.eye(len(drug_cooccurrence))
+        
+        # Find most similar drug pairs
+        drug_similarity_pairs = []
+        for i in range(len(mlb.classes_)):
+            for j in range(i+1, len(mlb.classes_)):
+                similarity = float(drug_cooccurrence_normalized[i, j])
+                if similarity > 0.1:  # Only include significant similarities
+                    drug_similarity_pairs.append({
+                        "drug_1": mlb.classes_[i],
+                        "drug_2": mlb.classes_[j],
+                        "similarity": similarity,
+                        "cooccurrence_rate": float(drug_cooccurrence[i, j])
+                    })
+        
+        # Sort by similarity
+        drug_similarity_pairs.sort(key=lambda x: x["similarity"], reverse=True)
+        top_similar_pairs = drug_similarity_pairs[:10]
+        
+    except Exception as e:
+        print(f"Drug cooccurrence error: {e}")
+        drug_cooccurrence = np.zeros((len(mlb.classes_), len(mlb.classes_)))
+        drug_correlation_matrix = np.eye(len(mlb.classes_))
+        top_similar_pairs = []
 
     correlations["feature_importance"] = feature_importance
     correlations["drug_cooccurrence"] = drug_cooccurrence.tolist()
     correlations["drug_correlation_matrix"] = drug_correlation_matrix.tolist()
+    correlations["top_similar_drug_pairs"] = top_similar_pairs
+    correlations["total_features_analyzed"] = X_dense.shape[1]
 
     # Model characteristics
     supervised_algorithms = ["lr", "nb", "svm", "rf", "xgb"]
@@ -298,18 +416,57 @@ def get_model_metrics(algo='lr'):
         }
     }
 
-    # Confusion matrix interpretability
+    # Confusion matrix interpretability - Enhanced analysis
+    avg_precision = float(np.mean([cm["precision"] for cm in conf_matrices_detailed])) if conf_matrices_detailed else 0.0
+    avg_recall = float(np.mean([cm["recall"] for cm in conf_matrices_detailed])) if conf_matrices_detailed else 0.0
+    avg_specificity = float(np.mean([cm["specificity"] for cm in conf_matrices_detailed])) if conf_matrices_detailed else 0.0
+    avg_f1 = float(np.mean([cm["f1_score"] for cm in conf_matrices_detailed])) if conf_matrices_detailed else 0.0
+    
+    # Ensure values are JSON-safe
+    avg_precision = 0.0 if np.isnan(avg_precision) or np.isinf(avg_precision) else avg_precision
+    avg_recall = 0.0 if np.isnan(avg_recall) or np.isinf(avg_recall) else avg_recall
+    avg_specificity = 0.0 if np.isnan(avg_specificity) or np.isinf(avg_specificity) else avg_specificity
+    avg_f1 = 0.0 if np.isnan(avg_f1) or np.isinf(avg_f1) else avg_f1
+    
+    # Calculate overall diagnostic metrics
+    total_tp = int(np.sum(conf_matrix_array[:, 1, 1]))
+    total_fp = int(np.sum(conf_matrix_array[:, 0, 1]))
+    total_fn = int(np.sum(conf_matrix_array[:, 1, 0]))
+    total_tn = int(np.sum(conf_matrix_array[:, 0, 0]))
+    
+    # Overall diagnostic metrics
+    overall_sensitivity = total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else 0
+    overall_specificity = total_tn / (total_tn + total_fp) if (total_tn + total_fp) > 0 else 0
+    
+    # Class balance analysis
+    label_supports = [cm["support"] for cm in conf_matrices_detailed]
+    class_imbalance_ratio = max(label_supports) / (min(label_supports) + 1e-10) if label_supports else 0
+    
     confusion_summary = {
-        "total_true_positives": int(np.sum(conf_matrix_array[:, 1, 1])),
-        "total_false_positives": int(np.sum(conf_matrix_array[:, 0, 1])),
-        "total_false_negatives": int(np.sum(conf_matrix_array[:, 1, 0])),
-        "total_true_negatives": int(np.sum(conf_matrix_array[:, 0, 0])),
-        "average_precision_per_label": float(np.mean([cm["precision"] for cm in conf_matrices_detailed])),
-        "average_recall_per_label": float(np.mean([cm["recall"] for cm in conf_matrices_detailed]))
+        "total_true_positives": total_tp,
+        "total_false_positives": total_fp,
+        "total_false_negatives": total_fn,
+        "total_true_negatives": total_tn,
+        "average_precision_per_label": float(avg_precision),
+        "average_recall_per_label": float(avg_recall),
+        "average_specificity_per_label": float(avg_specificity),
+        "average_f1_per_label": float(avg_f1),
+        "overall_sensitivity": float(overall_sensitivity),
+        "overall_specificity": float(overall_specificity),
+        "class_imbalance_ratio": float(class_imbalance_ratio),
+        "num_labels_analyzed": len(conf_matrices_detailed),
+        "model_diagnostic_assessment": {
+            "sensitivity_level": "High" if overall_sensitivity > 0.8 else ("Medium" if overall_sensitivity > 0.6 else "Low"),
+            "specificity_level": "High" if overall_specificity > 0.8 else ("Medium" if overall_specificity > 0.6 else "Low"),
+            "balance_assessment": "Balanced" if class_imbalance_ratio < 2.0 else ("Moderately Imbalanced" if class_imbalance_ratio < 5.0 else "Highly Imbalanced"),
+            "false_positive_concern": "Low" if total_fp < total_fn else "High",
+            "false_negative_concern": "Low" if total_fn < total_fp else "High"
+        }
     }
 
     return {
         "algorithm": algo,
+        "data_scope": scope,
         "model_characteristics": model_characteristics,
         "basic_metrics": {
             "precision": precision,
@@ -327,7 +484,7 @@ def get_model_metrics(algo='lr'):
         "predictability_insights": {
             "model_reliability": "High" if f1 > 0.8 else ("Medium" if f1 > 0.6 else "Low"),
             "prediction_confidence": "High" if accuracy > 0.8 else ("Medium" if accuracy > 0.6 else "Low"),
-            "correlation_strength": "Strong" if np.mean([fi["mean_correlation"] for fi in feature_importance.values()]) > 0.5 else "Moderate"
+            "correlation_strength": "Strong" if len(feature_importance) > 0 and np.mean([fi["mean_correlation"] for fi in feature_importance.values()]) > 0.5 else "Moderate"
         },
         "labels": mlb.classes_.tolist()  # Keep for backward compatibility
     }
@@ -390,11 +547,21 @@ def compare_algorithms_for_disease(disease: str, age: int = None):
                 "age_match": match_type
             })
 
-        # Get model metrics
-        y_pred = model.predict(X)
-        precision = precision_score(y, y_pred, average='micro', zero_division=0)
-        recall = recall_score(y, y_pred, average='micro', zero_division=0)
-        f1 = f1_score(y, y_pred, average='micro', zero_division=0)
+        # Get disease-specific model metrics
+        disease_idx = get_disease_specific_indices(disease)
+        if disease_idx and len(disease_idx) > 0:
+            X_disease = X[disease_idx]
+            y_disease = y[disease_idx]
+            y_pred = model.predict(X_disease)
+            precision = precision_score(y_disease, y_pred, average='micro', zero_division=0)
+            recall = recall_score(y_disease, y_pred, average='micro', zero_division=0)
+            f1 = f1_score(y_disease, y_pred, average='micro', zero_division=0)
+        else:
+            # Fallback to overall metrics if disease not found
+            y_pred = model.predict(X)
+            precision = precision_score(y, y_pred, average='micro', zero_division=0)
+            recall = recall_score(y, y_pred, average='micro', zero_division=0)
+            f1 = f1_score(y, y_pred, average='micro', zero_division=0)
 
         elapsed = time.time() - start_time
 

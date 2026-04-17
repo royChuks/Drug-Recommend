@@ -34,9 +34,9 @@ def predict(input: PatientProfile):
         "algo": input.algo
     }
 
-@app.get("/metrics/{algo}")
-def metrics(algo: str):
-    return get_model_metrics(algo=algo)
+@app.get("/metrics/{disease}/{algo}")
+def metrics(disease: str, algo: str):
+    return get_model_metrics(algo=algo, disease=disease)
 
 @app.post("/compare-algorithms")
 def compare_algorithms(input: PatientProfile):
@@ -46,6 +46,6 @@ def compare_algorithms(input: PatientProfile):
 
 @app.post("/analytics/charts")
 def get_analytics_charts(input: PatientProfile):
-    """Get chart data for algorithm comparison analytics"""
+    """Get chart data for algorithm comparison analytics - specific to patient's disease"""
     chart_data = get_algorithm_comparison_chart_data(input.disease, age=input.age)
     return chart_data

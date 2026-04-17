@@ -717,21 +717,36 @@
       });
       // METRICS button handler
       document.getElementById('fetch-metrics-btn').addEventListener('click', async function() {
-        // Allow metrics by selected algo (default: use predict section radio if exists)
+        // Get disease and algo from form
+        const form = document.getElementById('predict-form');
+        const disease = form.disease.value;
         let algo = 'lr';
         const inputAlgo = document.querySelector('#section-predict input[name="algo"]:checked');
         if(inputAlgo) algo = inputAlgo.value;
+        
+        if (!disease) {
+          alert('Please enter a disease in the form first.');
+          return;
+        }
+        
         const metricsDiv = document.getElementById('metrics-result');
         const confMatrixDiv = document.getElementById('confusion-matrix');
         metricsDiv.innerHTML = '<em style="color: rgba(255,255,255,0.8);">🔄 Loading metrics...</em>';
         confMatrixDiv.innerHTML = '';
-        const res = await fetch(`http://localhost:8000/metrics/${algo}`);
+        const res = await fetch(`http://localhost:8000/metrics/${encodeURIComponent(disease)}/${algo}`);
         const data = await res.json();
+        
+        // Check for errors
+        if (data.error) {
+          metricsDiv.innerHTML = `<div class="card red lighten-4" style="color: rgba(255, 255, 255, 0.95);"><div class="card-content">⚠️ ${data.error}</div></div>`;
+          return;
+        }
 
         // Enhanced metrics display
         let metricsHtml = `
           <div style="margin-bottom: 2rem;">
-            <h6 style="color: #2E8B57; margin-bottom: 1rem;">${data.algorithm.toUpperCase()} Model Analysis</h6>
+            <h6 style="color: #2E8B57; margin-bottom: 1rem;">📊 ${data.algorithm.toUpperCase()} Analysis for: <strong>${disease}</strong></h6>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 1rem;">Data Scope: ${data.data_scope}</p>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
               <div style="background: rgba(46, 139, 87, 0.1); padding: 1rem; border-radius: 10px;">
                 <strong style="color: #2E8B57;">Model Type</strong><br>
@@ -787,40 +802,78 @@
 
         // Enhanced confusion matrix display
         let confHtml = `
-          <h6 style="color: #2E8B57; margin-bottom: 1rem;">Confusion Matrix Analysis</h6>
-          <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
-            <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.5rem;">Overall Summary</h6>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; font-size: 0.9rem;">
-              <div><strong>True Positives:</strong> ${data.confusion_matrix_analysis.summary.total_true_positives}</div>
-              <div><strong>False Positives:</strong> ${data.confusion_matrix_analysis.summary.total_false_positives}</div>
-              <div><strong>False Negatives:</strong> ${data.confusion_matrix_analysis.summary.total_false_negatives}</div>
-              <div><strong>True Negatives:</strong> ${data.confusion_matrix_analysis.summary.total_true_negatives}</div>
+          <h6 style="color: #2E8B57; margin-bottom: 1rem;">📊 Confusion Matrix Analysis</h6>
+          
+          <!-- Overall Summary -->
+          <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 2rem; border-left: 4px solid #2E8B57;">
+            <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">📈 Overall Diagnostic Summary</h6>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+              <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">True Positives</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${data.confusion_matrix_analysis.summary.total_true_positives}</div>
+              </div>
+              <div style="background: rgba(244, 67, 54, 0.1); padding: 0.75rem; border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">False Positives</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #FF6B6B;">${data.confusion_matrix_analysis.summary.total_false_positives}</div>
+              </div>
+              <div style="background: rgba(244, 67, 54, 0.1); padding: 0.75rem; border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">False Negatives</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #FF6B6B;">${data.confusion_matrix_analysis.summary.total_false_negatives}</div>
+              </div>
+              <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">True Negatives</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${data.confusion_matrix_analysis.summary.total_true_negatives}</div>
+              </div>
             </div>
-            <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-              <strong>Avg Precision per Label:</strong> ${(data.confusion_matrix_analysis.summary.average_precision_per_label * 100).toFixed(1)}%<br>
-              <strong>Avg Recall per Label:</strong> ${(data.confusion_matrix_analysis.summary.average_recall_per_label * 100).toFixed(1)}%
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; font-size: 0.9rem;">
+              <div><strong style="color: #2E8B57;">Avg Precision:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_precision_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg Recall:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_recall_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg Specificity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_specificity_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg F1-Score:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_f1_per_label * 100).toFixed(2)}%</span></div>
+            </div>
+
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">🔬 Clinical Metrics</h6>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; font-size: 0.9rem;">
+                <div><strong style="color: #2E8B57;">Sensitivity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.overall_sensitivity * 100).toFixed(2)}%</span></div>
+                <div><strong style="color: #2E8B57;">Specificity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.overall_specificity * 100).toFixed(2)}%</span></div>
+                <div><strong style="color: #2E8B57;">Class Balance:</strong> <span style="color: rgba(255,255,255,0.9);">${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.balance_assessment}</span></div>
+                <div><strong style="color: #2E8B57;">False Positives:</strong> <span style="color: ${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.false_positive_concern === 'High' ? '#FF6B6B' : '#4CAF50'};">${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.false_positive_concern}</span></div>
+              </div>
             </div>
           </div>
 
-          <h6 style="color: rgba(255,255,255,0.9); margin: 1.5rem 0 0.5rem 0;">Sample Label Analysis (First 3 Labels)</h6>
+          <!-- Per-Label Details -->
+          <h6 style="color: rgba(255,255,255,0.9); margin: 2rem 0 1rem 0;">📋 Per-Label Detailed Analysis (First 5 Labels)</h6>
         `;
 
-        // Show detailed analysis for first 3 labels
-        const labelsToShow = data.confusion_matrix_analysis.per_label_details.slice(0, 3);
+        // Show detailed analysis for first 5 labels
+        const labelsToShow = data.confusion_matrix_analysis.per_label_details.slice(0, 5);
         labelsToShow.forEach(labelData => {
           confHtml += `
-            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
-              <h6 style="color: #2E8B57; margin-bottom: 0.5rem;">${labelData.label}</h6>
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; font-size: 0.9rem;">
+            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 3px solid #2E8B57;">
+              <h6 style="color: #2E8B57; margin-bottom: 0.75rem;">💊 ${labelData.label}</h6>
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; font-size: 0.85rem; margin-bottom: 0.75rem;">
                 <div><strong>TP:</strong> ${labelData.tp}</div>
                 <div><strong>FP:</strong> ${labelData.fp}</div>
                 <div><strong>FN:</strong> ${labelData.fn}</div>
                 <div><strong>TN:</strong> ${labelData.tn}</div>
               </div>
-              <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-                <strong>Precision:</strong> ${(labelData.precision * 100).toFixed(1)}% |
-                <strong>Recall:</strong> ${(labelData.recall * 100).toFixed(1)}% |
-                <strong>F1:</strong> ${(labelData.f1_score * 100).toFixed(1)}%
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; font-size: 0.9rem;">
+                <div><strong style="color: #2E8B57;">Precision:</strong> ${(labelData.precision * 100).toFixed(2)}%</div>
+                <div><strong style="color: #2E8B57;">Recall:</strong> ${(labelData.recall * 100).toFixed(2)}%</div>
+                <div><strong style="color: #2E8B57;">F1-Score:</strong> ${(labelData.f1_score * 100).toFixed(2)}%</div>
+                <div><strong style="color: #2E8B57;">Specificity:</strong> ${(labelData.specificity * 100).toFixed(2)}%</div>
+              </div>
+              
+              <div style="margin-top: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.7);">
+                <strong>False Positive Rate:</strong> ${(labelData.false_positive_rate * 100).toFixed(2)}% | 
+                <strong>False Negative Rate:</strong> ${(labelData.false_negative_rate * 100).toFixed(2)}% | 
+                <strong>Support:</strong> ${labelData.support}
               </div>
             </div>
           `;

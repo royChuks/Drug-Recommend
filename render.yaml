@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: drug-recommendation-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /docs
+    autoDeploy: true
+  - type: static
+    name: drug-recommendation-frontend
+    buildCommand: echo "No build needed"
+    staticPublishPath: ./frontend
+    autoDeploy: true
