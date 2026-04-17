@@ -786,14 +786,50 @@
               </div>
             </div>
 
-            <h6 style="color: #2E8B57; margin: 2rem 0 1rem 0;">Correlation Analysis</h6>
-            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
-              <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0;">
-                <strong>Feature Correlation:</strong> ${data.predictability_insights.correlation_strength} relationship between text features and predictions
-              </p>
+            <h6 style="color: #2E8B57; margin: 2rem 0 1rem 0;">🔗 Correlation Analysis</h6>
+            
+            <!-- Feature Importance Summary -->
+            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #2E8B57;">
+              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">📊 Feature-Drug Relationships</h6>
               <p style="color: rgba(255,255,255,0.8); margin: 0.5rem 0; font-size: 0.9rem;">
-                Average feature correlation: ${(Object.values(data.correlation_analysis.feature_importance).reduce((sum, fi) => sum + fi.mean_correlation, 0) / Object.keys(data.correlation_analysis.feature_importance).length * 100).toFixed(1)}%
+                <strong>Total Features Analyzed:</strong> ${data.correlation_analysis.total_features_analyzed}
               </p>
+              
+              <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                ${Object.entries(data.correlation_analysis.feature_importance).slice(0, 5).map(([drug, stats]) => `
+                  <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
+                    <div style="color: #2E8B57; font-weight: 600; margin-bottom: 0.5rem;">💊 ${drug}</div>
+                    <div style="font-size: 0.85rem; color: rgba(255,255,255,0.9);">
+                      <div>Mean Corr: ${(stats.mean_correlation * 100).toFixed(1)}%</div>
+                      <div>Max Corr: ${(stats.max_correlation * 100).toFixed(1)}%</div>
+                      <div>Strength: <strong style="color: ${stats.correlation_strength === 'Strong' ? '#4CAF50' : (stats.correlation_strength === 'Moderate' ? '#FFC107' : '#FF9800')}">${stats.correlation_strength}</strong></div>
+                      <div style="color: rgba(255,255,255,0.7); margin-top: 0.25rem; font-size: 0.8rem;">Features: ${stats.num_features_analyzed}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Drug-Drug Similarity -->
+            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; border-left: 4px solid #2E8B57;">
+              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">🤝 Drug-Drug Similarity (Top Pairs)</h6>
+              ${data.correlation_analysis.top_similar_drug_pairs && data.correlation_analysis.top_similar_drug_pairs.length > 0 ? `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
+                  ${data.correlation_analysis.top_similar_drug_pairs.slice(0, 5).map(pair => `
+                    <div style="background: rgba(70, 130, 180, 0.1); padding: 0.75rem; border-radius: 8px;">
+                      <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-bottom: 0.25rem;">
+                        <strong>${pair.drug_1}</strong> ↔ <strong>${pair.drug_2}</strong>
+                      </div>
+                      <div style="font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                        <div>Similarity: <strong style="color: #4CAF50;">${(pair.similarity * 100).toFixed(1)}%</strong></div>
+                        <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem;">Co-occurrence: ${(pair.cooccurrence_rate * 100).toFixed(2)}%</div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : `
+                <p style="color: rgba(255,255,255,0.7);">No significant drug-drug relationships found for this disease.</p>
+              `}
             </div>
           </div>
         `;
