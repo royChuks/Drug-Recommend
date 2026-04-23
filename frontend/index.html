@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Clinical Drug Recommendation System</title>
 
   <!-- Materialize CSS -->
@@ -465,6 +466,149 @@
       canvas {
         height: 200px !important;
       }
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+
+      nav {
+        padding: 0.5rem 0 !important;
+      }
+
+      nav .brand-logo {
+        font-size: 1.1rem !important;
+      }
+
+      .container {
+        padding: 1rem !important;
+        width: 100% !important;
+      }
+
+      .card-content {
+        padding: 1rem !important;
+      }
+
+      .card-title {
+        font-size: 1.2rem !important;
+      }
+
+      #results .card-title {
+        font-size: 1.2rem !important;
+      }
+
+      .tabs {
+        margin: 1rem 0 !important;
+        padding: 0.25rem !important;
+      }
+
+      .tabs .tab a {
+        font-size: 0.85rem;
+        padding: 0 0.5rem;
+      }
+
+      .input-field {
+        margin: 1rem 0 !important;
+      }
+
+      .input-field input,
+      .input-field select {
+        font-size: 14px !important;
+        padding: 0.5rem 0.75rem !important;
+      }
+
+      .btn {
+        width: 100% !important;
+        margin: 0.5rem 0 !important;
+        height: 48px !important;
+        line-height: 48px !important;
+        font-size: 1rem !important;
+      }
+
+      .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .radio-group {
+        padding: 0.75rem !important;
+        margin: 1rem 0 !important;
+      }
+
+      .radio-group label {
+        margin: 0.5rem 0 !important;
+        padding: 0.75rem 0.5rem !important;
+      }
+
+      /* Stack grids vertically on mobile */
+      div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Adjust chart containers */
+      canvas {
+        max-height: 250px !important;
+      }
+
+      /* Make tables scrollable */
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      /* Adjust section spacing */
+      .section {
+        padding: 1rem 0 !important;
+        min-height: auto !important;
+      }
+
+      /* Adjust metrics display */
+      div[style*="display: grid"] {
+        grid-template-columns: 1fr !important;
+        gap: 0.5rem !important;
+      }
+
+      /* Age badge adjustments */
+      span[style*="border-radius: 12px"] {
+        font-size: 0.75rem !important;
+        padding: 0.2rem 0.5rem !important;
+      }
+    }
+
+    /* Small phones */
+    @media (max-width: 480px) {
+      nav .brand-logo {
+        font-size: 0.9rem !important;
+      }
+
+      .card-title {
+        font-size: 1rem !important;
+      }
+
+      h5, h6 {
+        font-size: 1rem !important;
+      }
+
+      .btn {
+        font-size: 0.9rem !important;
+      }
+    }
+
+    /* Tablet adjustments */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .container {
+        width: 95% !important;
+        padding: 1.5rem !important;
+      }
+
+      div[style*="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
     }
   </style>
 </head>
