@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
-from model import predict_drugs, get_model_metrics, compare_algorithms_for_disease, get_algorithm_comparison_chart_data
+from model import predict_drugs, get_model_metrics, compare_algorithms_for_disease, get_algorithm_comparison_chart_data, load_data, get_model
 import os
+import traceback
 
 app = FastAPI(title="Drug Recommendation API")
 
@@ -14,6 +15,32 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_event():
+    """Preload data and models on startup"""
+    try:
+        print("Preloading data...")
+        load_data()
+        print("Data loaded successfully!")
+        # Preload one model to verify everything works
+        get_model('lr')
+        print("Models ready!")
+    except Exception as e:
+        print(f"Error during startup: {e}")
+        traceback.print_exc()
+
+@app.get("/status")
+def get_status():
+    """Check if data and models are loaded"""
+    from model import df, grouped, models_cache
+    return {
+        "data_loaded": df is not None,
+        "num_diseases": len(grouped) if grouped is not None else 0,
+        "models_loaded": list(models_cache.keys()),
+        "dataset_file_exists": os.path.exists("disease_drug_dataset.csv"),
+        "model_cache_exists": os.path.exists("model_cache")
+    }
 
 class PatientProfile(BaseModel):
     disease: str

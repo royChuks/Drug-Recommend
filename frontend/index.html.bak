@@ -647,7 +647,7 @@
         const resultsDiv = document.getElementById("results");
         resultsDiv.innerHTML = '<div class="card" style="margin-top: 1rem;"><div class="card-content"><em style="color: rgba(255,255,255,0.8);">🔄 Processing recommendation...</em></div></div>';
 
-        const response = await fetch("/predict", {
+        const response = await fetch("http://localhost:8000/predict", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -733,7 +733,7 @@
         const confMatrixDiv = document.getElementById('confusion-matrix');
         metricsDiv.innerHTML = '<em style="color: rgba(255,255,255,0.8);">🔄 Loading metrics...</em>';
         confMatrixDiv.innerHTML = '';
-        const res = await fetch(`/metrics/${encodeURIComponent(disease)}/${algo}`);
+        const res = await fetch(`http://localhost:8000/metrics/${encodeURIComponent(disease)}/${algo}`);
         const data = await res.json();
         
         // Check for errors
@@ -943,7 +943,7 @@
             algo: 'lr'
           };
           
-          const response = await fetch('/analytics/charts', {
+          const response = await fetch('http://localhost:8000/analytics/charts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
