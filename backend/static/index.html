@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clinical Drug Recommendation System</title>
+
+  <!-- Materialize CSS -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Google Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Glassmorphism Navbar */
+    nav {
+      background: rgba(46, 139, 87, 0.25) !important;
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      padding: 1rem 0;
+    }
+    
+    nav .brand-logo {
+      font-weight: 600;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Glassmorphism Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.15) !important;
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-radius: 20px !important;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+    }
+    
+    .card-content {
+      padding: 2rem !important;
+    }
+    
+    .card-title {
+      font-weight: 600;
+      color: #2E8B57 !important;
+      text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Glassmorphism Tabs */
+    .tabs {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 0.5rem;
+      margin: 2rem 0;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      display: flex;
+      justify-content: space-around;
+    }
+    
+    .tabs .tab {
+      flex: 1;
+      text-align: center;
+    }
+    
+    .tabs .tab a {
+      color: rgba(255, 255, 255, 0.8) !important;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .tabs .tab a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white !important;
+    }
+    
+    .tabs .tab a.active {
+      background: rgba(46, 139, 87, 0.4) !important;
+      color: white !important;
+      font-weight: 600;
+    }
+    
+    .tabs .indicator {
+      display: none;
+    }
+    
+    /* Input Fields - Glass Style */
+    .input-field input,
+    .input-field select {
+      background: rgba(255, 255, 255, 0.2) !important;
+      border-radius: 10px !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      color: #333 !important;
+      padding: 0.75rem 1rem !important;
+      transition: all 0.3s ease;
+    }
+    
+    .input-field input:focus,
+    .input-field select:focus {
+      background: rgba(255, 255, 255, 0.3) !important;
+      border-color: #2E8B57 !important;
+      box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2) !important;
+    }
+    
+    .input-field label {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 500;
+    }
+    
+    .input-field input:focus + label,
+    .input-field input:valid + label,
+    .input-field select:focus + label {
+      color: #2E8B57 !important;
+    }
+    
+    /* Buttons - Seagreen Glass */
+    .btn {
+      background: rgba(46, 139, 87, 0.6) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 4px 15px 0 rgba(46, 139, 87, 0.3);
+      transition: all 0.3s ease;
+      font-weight: 600;
+      text-transform: none;
+    }
+    
+    .btn:hover {
+      background: rgba(46, 139, 87, 0.8) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px 0 rgba(46, 139, 87, 0.4);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    /* Radio Buttons */
+    [type="radio"]:checked + span:after {
+      background-color: #2E8B57 !important;
+      border-color: #2E8B57 !important;
+    }
+    
+    [type="radio"] + span {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    /* Results Cards */
+    #results {
+      margin-top: 2rem;
+    }
+    
+    #results .card {
+      margin-top: 1rem;
+      background: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    #results .card:first-child {
+      margin-top: 0;
+    }
+    
+    #results .card-title {
+      color: #2E8B57 !important;
+      font-size: 1.5rem;
+    }
+    
+    #results .card-content p {
+      margin: 0.5rem 0 0 0;
+    }
+    
+    /* Container */
+    .container {
+      max-width: 1200px;
+      padding: 2rem;
+      margin: 0 auto;
+    }
+    
+    /* Navbar Container */
+    nav .container {
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+    }
+    
+    /* Navbar Brand */
+    nav .brand-logo {
+      font-size: 1.5rem;
+      padding: 0;
+    }
+    
+    /* Section Spacing */
+    .section {
+      padding: 2rem 0;
+      min-height: 400px;
+    }
+    
+    /* Form Styling */
+    form {
+      margin-top: 1.5rem;
+    }
+    
+    /* Radio Button Group Styling */
+    .radio-group {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .radio-group b {
+      display: block;
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .radio-group label {
+      display: block;
+      margin: 0.75rem 0;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .radio-group label:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Input Field Spacing */
+    .input-field {
+      margin: 1.5rem 0 !important;
+    }
+    
+    /* Button Container */
+    .btn-container {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    
+    .btn {
+      padding: 0.75rem 2rem;
+      min-width: 200px;
+    }
+    
+    /* List Items */
+    ul li {
+      color: rgba(255, 255, 255, 0.9) !important;
+      line-height: 1.8;
+    }
+    
+    /* Select Dropdown */
+    .select-wrapper input.select-dropdown {
+      background: rgba(255, 255, 255, 0.2) !important;
+      border-radius: 10px !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    /* Metrics Display */
+    #metrics-result {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 1.1rem;
+      line-height: 2.5;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    #metrics-result b {
+      color: #2E8B57;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 140px;
+    }
+    
+    #metrics-result em {
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+    }
+    
+    /* Confusion Matrix Table */
+    #confusion-matrix {
+      margin-top: 2rem;
+    }
+    
+    #confusion-matrix b {
+      color: #2E8B57;
+      display: block;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    #confusion-matrix table {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    #confusion-matrix td {
+      background: rgba(255, 255, 255, 0.15) !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      padding: 0.75rem !important;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    /* Error Card */
+    .red.lighten-4 {
+      background: rgba(244, 67, 54, 0.3) !important;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(244, 67, 54, 0.4) !important;
+    }
+    
+    /* Smooth Transitions */
+    * {
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Mobile Responsiveness */
+    @media only screen and (max-width: 768px) {
+      .container {
+        padding: 1rem;
+        margin: 0;
+      }
+
+      .nav-wrapper {
+        padding: 0 1rem;
+      }
+
+      .nav-wrapper .brand-logo {
+        font-size: 1.2rem;
+      }
+
+      .tabs {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+      }
+
+      .tabs .tab {
+        flex: 1;
+        text-align: center;
+        margin-bottom: 0.25rem;
+      }
+
+      .tabs .tab a {
+        padding: 0.75rem;
+        border-radius: 10px;
+        margin: 0;
+      }
+
+      .card-content {
+        padding: 1.5rem 1rem !important;
+      }
+
+      .card-title {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+      }
+
+      .radio-group {
+        padding: 1rem;
+      }
+
+      .radio-group label {
+        margin: 0.5rem 0;
+        padding: 0.5rem;
+      }
+
+      .input-field {
+        margin: 1rem 0 !important;
+      }
+
+      .btn-container {
+        margin-top: 1.5rem;
+        text-align: center;
+      }
+
+      .btn {
+        padding: 0.6rem 1.5rem;
+        min-width: 180px;
+        font-size: 0.9rem;
+      }
+
+      #results .card,
+      #metrics-section .card {
+        margin-bottom: 1rem;
+      }
+
+      /* Analytics charts responsive */
+      #analytics-results {
+        margin-top: 1rem;
+      }
+
+      canvas {
+        max-width: 100% !important;
+        height: 250px !important;
+      }
+
+      /* Mobile table for confusion matrix */
+      #confusion-matrix table {
+        font-size: 0.8rem;
+      }
+
+      #confusion-matrix td {
+        padding: 0.5rem !important;
+      }
+    }
+
+    @media only screen and (max-width: 480px) {
+      .container {
+        padding: 0.5rem;
+      }
+
+      .card-content {
+        padding: 1rem !important;
+      }
+
+      .card-title {
+        font-size: 1.2rem;
+      }
+
+      .btn {
+        padding: 0.5rem 1rem;
+        min-width: 160px;
+        font-size: 0.85rem;
+      }
+
+      canvas {
+        height: 200px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-wrapper container">
+      <a class="brand-logo">🩺 Drug Recommendation System</a>
+    </div>
+  </nav>
+
+  <!-- Preloader -->
+  <div id="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div style="text-align: center; color: white;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🩺</div>
+      <div style="font-size: 1.5rem; margin-bottom: 1rem;">Clinical Drug Recommendation System</div>
+      <div style="font-size: 1rem; opacity: 0.8;">Initializing system...</div>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top:40px;">
+    <ul class="tabs">
+      <li class="tab col s3"><a href="#section-predict" class="active">Symptom / Input</a></li>
+      <li class="tab col s3"><a href="#section-report">Model Report</a></li>
+      <li class="tab col s3"><a href="#section-analytics">Analytics</a></li>
+    </ul>
+
+    <!-- SYMPTOM/INPUT SECTION -->
+    <div id="section-predict" class="section">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Patient & Symptom Input</span>
+          <div style="background: rgba(46, 139, 87, 0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #2E8B57;">
+            <p style="color: rgba(255, 255, 255, 0.95); margin: 0; font-size: 0.9rem;">
+              <strong>💡 Age-Based Confidence:</strong> Drug recommendations are adjusted based on patient age. 
+              Drugs matching your age group (Pediatrics: 1-15, Adult: 16-49, Geriatric: 50+) receive higher confidence scores.
+            </p>
+          </div>
+          <form id="predict-form">
+            <div class="radio-group">
+              <b>Prediction Algorithm</b>
+              <label><input class="with-gap" name="algo" type="radio" value="lr" checked/><span>Logistic Regression (Current)</span></label>
+              <label><input class="with-gap" name="algo" type="radio" value="nb"/><span>Naïve Bayes</span></label>
+              <label><input class="with-gap" name="algo" type="radio" value="svm"/><span>SVM</span></label>
+              <label><input class="with-gap" name="algo" type="radio" value="rf"/><span>Random Forest</span></label>
+              <label><input class="with-gap" name="algo" type="radio" value="xgb"/><span>XGBoost</span></label>
+            </div>
+            <div class="input-field">
+              <input id="disease" name="disease" type="text" required>
+              <label for="disease">Symptom or Disease</label>
+            </div>
+            <div class="input-field">
+              <input id="age" name="age" type="number" min="0" required>
+              <label for="age">Age</label>
+            </div>
+            <div class="input-field">
+              <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              <label for="gender">Gender</label>
+            </div>
+            <div class="input-field">
+              <input id="weight" name="weight" type="number" step="0.1" min="0">
+              <label for="weight">Weight (kg)</label>
+            </div>
+            <div class="input-field">
+              <input id="medical_history" name="medical_history" type="text">
+              <label for="medical_history">Medical History</label>
+            </div>
+            <div class="btn-container">
+              <button class="btn" type="submit">
+                Get Recommendation
+                <i class="material-icons right">medical_services</i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="results"></div>
+    </div>
+
+    <!-- MODEL REPORT SECTION -->
+    <div id="section-report" class="section">
+      <div class="card" id="metrics-section">
+        <div class="card-content">
+          <span class="card-title">Model Report</span>
+          <div class="btn-container">
+            <button class="btn" id="fetch-metrics-btn" type="button">Get Metrics</button>
+          </div>
+          <div id="metrics-result" style="margin-top: 2rem;"></div>
+          <div id="confusion-matrix" style="margin-top: 2rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS SECTION -->
+    <div id="section-analytics" class="section">
+      <div class="card" style="margin-bottom: 2rem;">
+        <div class="card-content">
+          <span class="card-title">Algorithm Comparison Analytics</span>
+          <div style="background: rgba(46, 139, 87, 0.2); padding: 1rem; border-radius: 10px; margin: 1.5rem 0; border-left: 4px solid #2E8B57;">
+            <p style="color: rgba(255, 255, 255, 0.95); margin: 0; font-size: 0.9rem;">
+              Enter a disease in the "Symptom / Input" tab and click "Compare Algorithms" below to see detailed analytics comparing all algorithms.
+            </p>
+          </div>
+          <div class="btn-container">
+            <button class="btn" id="compare-algorithms-btn" type="button">Compare Algorithms</button>
+          </div>
+          <div id="analytics-results" style="margin-top: 2rem;"></div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom: 2rem;">
+        <div class="card-content">
+          <span class="card-title">Algorithm Information</span>
+          <div style="margin-top: 1.5rem;">
+            <ul style="list-style: none; padding-left: 0;">
+              <li style="margin: 1.5rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border-left: 4px solid #2E8B57;">
+                <b style="color: #2E8B57; display: block; margin-bottom: 0.5rem;">Logistic Regression (LR):</b>
+                <span>Fast, interpretable linear model. Good baseline for classification tasks.</span>
+              </li>
+              <li style="margin: 1.5rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border-left: 4px solid #2E8B57;">
+                <b style="color: #2E8B57; display: block; margin-bottom: 0.5rem;">Naïve Bayes (NB):</b>
+                <span>Probabilistic classifier, very fast on text, good baseline for symptoms/diseases.</span>
+              </li>
+              <li style="margin: 1.5rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border-left: 4px solid #2E8B57;">
+                <b style="color: #2E8B57; display: block; margin-bottom: 0.5rem;">SVM:</b>
+                <span>Finds optimal separation boundaries. Effective for high-dimensional classification.</span>
+              </li>
+              <li style="margin: 1.5rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border-left: 4px solid #2E8B57;">
+                <b style="color: #2E8B57; display: block; margin-bottom: 0.5rem;">Random Forest (RF):</b>
+                <span>Ensemble of decision trees, robust, handles multiple features well.</span>
+              </li>
+              <li style="margin: 1.5rem 0; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 10px; border-left: 4px solid #2E8B57;">
+                <b style="color: #2E8B57; display: block; margin-bottom: 0.5rem;">XGBoost (XGB):</b>
+                <span>State-of-the-art for tabular data, gradient boosting, competition-winner.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Hide preloader
+      setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+          preloader.style.display = 'none';
+        }
+      }, 1000); // Show for at least 1 second for UX
+
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+      var tabElems = document.querySelectorAll('.tabs');
+      M.Tabs.init(tabElems);
+
+      document.getElementById('predict-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const algo = form.querySelector('input[name="algo"]:checked').value;
+        const data = {
+          disease: form.disease.value,
+          age: form.age.value,
+          gender: form.gender.value,
+          weight: form.weight.value,
+          medical_history: form.medical_history.value,
+          algo: algo
+        };
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = '<div class="card" style="margin-top: 1rem;"><div class="card-content"><em style="color: rgba(255,255,255,0.8);">🔄 Processing recommendation...</em></div></div>';
+
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const res = await response.json();
+        if (!res.recommendations || res.recommendations.length === 0) {
+          resultsDiv.innerHTML = `
+            <div class="card red lighten-4" style="margin-top: 1rem;">
+              <div class="card-content" style="color: rgba(255, 255, 255, 0.95);">
+                No strong drug recommendation found.
+              </div>
+            </div>`;
+          return;
+        }
+        res.recommendations.forEach(item => {
+          // Determine age match badge
+          let ageBadge = '';
+          let ageBadgeColor = '';
+          if (item.age_match) {
+            if (item.age_match === 'perfect_match') {
+              ageBadge = '✓ Age Match';
+              ageBadgeColor = '#4CAF50';
+            } else if (item.age_match === 'mismatch') {
+              ageBadge = '⚠ Age Mismatch';
+              ageBadgeColor = '#FF9800';
+            } else {
+              ageBadge = '~ Partial Match';
+              ageBadgeColor = '#FFC107';
+            }
+          }
+          
+          // Age group display
+          const ageGroupLabels = {
+            'pediatrics': '👶 Pediatrics (1-15)',
+            'adult': '👤 Adult (16-49)',
+            'geriatric': '👴 Geriatric (50+)'
+          };
+          const ageGroupLabel = ageGroupLabels[item.age_group] || item.age_group;
+          
+          resultsDiv.innerHTML += `
+            <div class="card" style="margin-top: 1rem;">
+              <div class="card-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <span class="card-title">${item.drug}</span>
+                  ${ageBadge ? `<span style="background: ${ageBadgeColor}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem; font-weight: 600;">${ageBadge}</span>` : ''}
+                </div>
+                <div style="color: rgba(255, 255, 255, 0.9); margin-top: 0.75rem;">
+                  <p style="margin: 0.5rem 0;">
+                    <strong style="color: #2E8B57;">Adjusted Confidence:</strong> 
+                    <span style="font-size: 1.2rem; font-weight: 700;">${(item.confidence * 100).toFixed(1)}%</span>
+                  </p>
+                  ${item.base_confidence ? `
+                    <p style="margin: 0.5rem 0; color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                      Base Confidence: ${(item.base_confidence * 100).toFixed(1)}%
+                      ${item.confidence > item.base_confidence ? ' <span style="color: #4CAF50;">↑ Boosted</span>' : ''}
+                      ${item.confidence < item.base_confidence ? ' <span style="color: #FF9800;">↓ Reduced</span>' : ''}
+                    </p>
+                  ` : ''}
+                  <p style="margin: 0.5rem 0; color: rgba(255, 255, 255, 0.8);">
+                    <strong>Age Group:</strong> ${ageGroupLabel}
+                  </p>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      });
+      // METRICS button handler
+      document.getElementById('fetch-metrics-btn').addEventListener('click', async function() {
+        // Get disease and algo from form
+        const form = document.getElementById('predict-form');
+        const disease = form.disease.value;
+        let algo = 'lr';
+        const inputAlgo = document.querySelector('#section-predict input[name="algo"]:checked');
+        if(inputAlgo) algo = inputAlgo.value;
+        
+        if (!disease) {
+          alert('Please enter a disease in the form first.');
+          return;
+        }
+        
+        const metricsDiv = document.getElementById('metrics-result');
+        const confMatrixDiv = document.getElementById('confusion-matrix');
+        metricsDiv.innerHTML = '<em style="color: rgba(255,255,255,0.8);">🔄 Loading metrics...</em>';
+        confMatrixDiv.innerHTML = '';
+        const res = await fetch(`/metrics/${encodeURIComponent(disease)}/${algo}`);
+        const data = await res.json();
+        
+        // Check for errors
+        if (data.error) {
+          metricsDiv.innerHTML = `<div class="card red lighten-4" style="color: rgba(255, 255, 255, 0.95);"><div class="card-content">⚠️ ${data.error}</div></div>`;
+          return;
+        }
+
+        // Enhanced metrics display
+        let metricsHtml = `
+          <div style="margin-bottom: 2rem;">
+            <h6 style="color: #2E8B57; margin-bottom: 1rem;">📊 ${data.algorithm.toUpperCase()} Analysis for: <strong>${disease}</strong></h6>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 1rem;">Data Scope: ${data.data_scope}</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+              <div style="background: rgba(46, 139, 87, 0.1); padding: 1rem; border-radius: 10px;">
+                <strong style="color: #2E8B57;">Model Type</strong><br>
+                <span style="color: rgba(255,255,255,0.9);">${data.model_characteristics.algorithm_type}</span>
+              </div>
+              <div style="background: rgba(46, 139, 87, 0.1); padding: 1rem; border-radius: 10px;">
+                <strong style="color: #2E8B57;">Learning Paradigm</strong><br>
+                <span style="color: rgba(255,255,255,0.9);">${data.model_characteristics.learning_paradigm}</span>
+              </div>
+              <div style="background: rgba(46, 139, 87, 0.1); padding: 1rem; border-radius: 10px;">
+                <strong style="color: #2E8B57;">Reliability</strong><br>
+                <span style="color: rgba(255,255,255,0.9);">${data.predictability_insights.model_reliability}</span>
+              </div>
+            </div>
+
+            <h6 style="color: #2E8B57; margin: 2rem 0 1rem 0;">Performance Metrics</h6>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${(data.basic_metrics.precision * 100).toFixed(1)}%</div>
+                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Precision</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${(data.basic_metrics.recall * 100).toFixed(1)}%</div>
+                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Recall</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${(data.basic_metrics.f1_score * 100).toFixed(1)}%</div>
+                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">F1 Score</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${(data.basic_metrics.accuracy * 100).toFixed(1)}%</div>
+                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Accuracy</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+                <div style="font-size: 1.2rem; font-weight: bold; color: #FF9800;">${data.basic_metrics.hamming_loss.toFixed(3)}</div>
+                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Hamming Loss</div>
+              </div>
+            </div>
+
+            <h6 style="color: #2E8B57; margin: 2rem 0 1rem 0;">🔗 Correlation Analysis</h6>
+            
+            <!-- Feature Importance Summary -->
+            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #2E8B57;">
+              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">📊 Feature-Drug Relationships</h6>
+              <p style="color: rgba(255,255,255,0.8); margin: 0.5rem 0; font-size: 0.9rem;">
+                <strong>Total Features Analyzed:</strong> ${data.correlation_analysis.total_features_analyzed}
+              </p>
+              
+              <div style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                ${Object.entries(data.correlation_analysis.feature_importance).slice(0, 5).map(([drug, stats]) => `
+                  <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
+                    <div style="color: #2E8B57; font-weight: 600; margin-bottom: 0.5rem;">💊 ${drug}</div>
+                    <div style="font-size: 0.85rem; color: rgba(255,255,255,0.9);">
+                      <div>Mean Corr: ${(stats.mean_correlation * 100).toFixed(1)}%</div>
+                      <div>Max Corr: ${(stats.max_correlation * 100).toFixed(1)}%</div>
+                      <div>Strength: <strong style="color: ${stats.correlation_strength === 'Strong' ? '#4CAF50' : (stats.correlation_strength === 'Moderate' ? '#FFC107' : '#FF9800')}">${stats.correlation_strength}</strong></div>
+                      <div style="color: rgba(255,255,255,0.7); margin-top: 0.25rem; font-size: 0.8rem;">Features: ${stats.num_features_analyzed}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Drug-Drug Similarity -->
+            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; border-left: 4px solid #2E8B57;">
+              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">🤝 Drug-Drug Similarity (Top Pairs)</h6>
+              ${data.correlation_analysis.top_similar_drug_pairs && data.correlation_analysis.top_similar_drug_pairs.length > 0 ? `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem;">
+                  ${data.correlation_analysis.top_similar_drug_pairs.slice(0, 5).map(pair => `
+                    <div style="background: rgba(70, 130, 180, 0.1); padding: 0.75rem; border-radius: 8px;">
+                      <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-bottom: 0.25rem;">
+                        <strong>${pair.drug_1}</strong> ↔ <strong>${pair.drug_2}</strong>
+                      </div>
+                      <div style="font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                        <div>Similarity: <strong style="color: #4CAF50;">${(pair.similarity * 100).toFixed(1)}%</strong></div>
+                        <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem;">Co-occurrence: ${(pair.cooccurrence_rate * 100).toFixed(2)}%</div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : `
+                <p style="color: rgba(255,255,255,0.7);">No significant drug-drug relationships found for this disease.</p>
+              `}
+            </div>
+          </div>
+        `;
+
+        metricsDiv.innerHTML = metricsHtml;
+
+        // Enhanced confusion matrix display
+        let confHtml = `
+          <h6 style="color: #2E8B57; margin-bottom: 1rem;">📊 Confusion Matrix Analysis</h6>
+          
+          <!-- Overall Summary -->
+          <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 2rem; border-left: 4px solid #2E8B57;">
+            <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">📈 Overall Diagnostic Summary</h6>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+              <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">True Positives</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${data.confusion_matrix_analysis.summary.total_true_positives}</div>
+              </div>
+              <div style="background: rgba(244, 67, 54, 0.1); padding: 0.75rem; border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">False Positives</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #FF6B6B;">${data.confusion_matrix_analysis.summary.total_false_positives}</div>
+              </div>
+              <div style="background: rgba(244, 67, 54, 0.1); padding: 0.75rem; border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">False Negatives</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #FF6B6B;">${data.confusion_matrix_analysis.summary.total_false_negatives}</div>
+              </div>
+              <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
+                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">True Negatives</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${data.confusion_matrix_analysis.summary.total_true_negatives}</div>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; font-size: 0.9rem;">
+              <div><strong style="color: #2E8B57;">Avg Precision:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_precision_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg Recall:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_recall_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg Specificity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_specificity_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg F1-Score:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_f1_per_label * 100).toFixed(2)}%</span></div>
+            </div>
+
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">🔬 Clinical Metrics</h6>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; font-size: 0.9rem;">
+                <div><strong style="color: #2E8B57;">Sensitivity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.overall_sensitivity * 100).toFixed(2)}%</span></div>
+                <div><strong style="color: #2E8B57;">Specificity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.overall_specificity * 100).toFixed(2)}%</span></div>
+                <div><strong style="color: #2E8B57;">Class Balance:</strong> <span style="color: rgba(255,255,255,0.9);">${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.balance_assessment}</span></div>
+                <div><strong style="color: #2E8B57;">False Positives:</strong> <span style="color: ${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.false_positive_concern === 'High' ? '#FF6B6B' : '#4CAF50'};">${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.false_positive_concern}</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Per-Label Details -->
+          <h6 style="color: rgba(255,255,255,0.9); margin: 2rem 0 1rem 0;">📋 Per-Label Detailed Analysis (First 5 Labels)</h6>
+        `;
+
+        // Show detailed analysis for first 5 labels
+        const labelsToShow = data.confusion_matrix_analysis.per_label_details.slice(0, 5);
+        labelsToShow.forEach(labelData => {
+          confHtml += `
+            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 3px solid #2E8B57;">
+              <h6 style="color: #2E8B57; margin-bottom: 0.75rem;">💊 ${labelData.label}</h6>
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; font-size: 0.85rem; margin-bottom: 0.75rem;">
+                <div><strong>TP:</strong> ${labelData.tp}</div>
+                <div><strong>FP:</strong> ${labelData.fp}</div>
+                <div><strong>FN:</strong> ${labelData.fn}</div>
+                <div><strong>TN:</strong> ${labelData.tn}</div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; font-size: 0.9rem;">
+                <div><strong style="color: #2E8B57;">Precision:</strong> ${(labelData.precision * 100).toFixed(2)}%</div>
+                <div><strong style="color: #2E8B57;">Recall:</strong> ${(labelData.recall * 100).toFixed(2)}%</div>
+                <div><strong style="color: #2E8B57;">F1-Score:</strong> ${(labelData.f1_score * 100).toFixed(2)}%</div>
+                <div><strong style="color: #2E8B57;">Specificity:</strong> ${(labelData.specificity * 100).toFixed(2)}%</div>
+              </div>
+              
+              <div style="margin-top: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.7);">
+                <strong>False Positive Rate:</strong> ${(labelData.false_positive_rate * 100).toFixed(2)}% | 
+                <strong>False Negative Rate:</strong> ${(labelData.false_negative_rate * 100).toFixed(2)}% | 
+                <strong>Support:</strong> ${labelData.support}
+              </div>
+            </div>
+          `;
+        });
+
+        confMatrixDiv.innerHTML = confHtml;
+      });
+      
+      // ANALYTICS: Compare Algorithms button handler
+      let chartInstances = [];
+      document.getElementById('compare-algorithms-btn').addEventListener('click', async function() {
+        const form = document.getElementById('predict-form');
+        const disease = form.disease.value;
+        const age = form.age.value;
+        
+        if (!disease) {
+          alert('Please enter a disease in the "Symptom / Input" tab first.');
+          return;
+        }
+        
+        const resultsDiv = document.getElementById('analytics-results');
+        resultsDiv.innerHTML = '<div class="card"><div class="card-content"><em style="color: rgba(255,255,255,0.9);">🔄 Loading analytics...</em></div></div>';
+        
+        try {
+          const data = {
+            disease: disease,
+            age: parseInt(age) || null,
+            gender: form.gender.value || 'male',
+            weight: form.weight.value || null,
+            medical_history: form.medical_history.value || null,
+            algo: 'lr'
+          };
+          
+          const response = await fetch('/analytics/charts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          
+          const chartData = await response.json();
+          
+          // Destroy existing charts
+          chartInstances.forEach(chart => chart.destroy());
+          chartInstances = [];
+          
+          // Render charts
+          const charts = chartData.charts;
+          const comparison = chartData.comparison;
+          
+          let html = `
+            <div style="margin-top: 2rem;">
+              <h5 style="color: #2E8B57; margin-bottom: 1rem;">Comparison Results for: ${comparison.disease}</h5>
+              ${comparison.age ? `<p style="color: rgba(255,255,255,0.8);">Patient Age: ${comparison.age} years</p>` : ''}
+              
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px;">
+                  <h6 style="color: #2E8B57; margin-bottom: 1rem;">Performance Metrics Comparison</h6>
+                  <canvas id="metricsChart" style="max-height: 300px;"></canvas>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px;">
+                  <h6 style="color: #2E8B57; margin-bottom: 1rem;">Prediction Speed (ms)</h6>
+                  <canvas id="timingChart" style="max-height: 300px;"></canvas>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 15px;">
+                  <h6 style="color: #2E8B57; margin-bottom: 1rem;">Top Confidence Scores</h6>
+                  <canvas id="confidenceChart" style="max-height: 300px;"></canvas>
+                </div>
+              </div>
+              
+              <div style="margin-top: 2rem;">
+                <h6 style="color: #2E8B57; margin-bottom: 1rem;">Top Recommendations by Algorithm</h6>
+          `;
+          
+          // Add recommendation summaries
+          Object.keys(comparison.algorithms).forEach(algo => {
+            const algoData = comparison.algorithms[algo];
+            const metrics = comparison.metrics[algo];
+            html += `
+              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #2E8B57;">
+                <b style="color: #2E8B57; font-size: 1.1rem;">${algo.toUpperCase()}</b>
+                <p style="color: rgba(255,255,255,0.8); margin: 0.5rem 0;">
+                  Precision: ${(metrics.precision * 100).toFixed(2)}% | 
+                  Recall: ${(metrics.recall * 100).toFixed(2)}% | 
+                  F1: ${(metrics.f1_score * 100).toFixed(2)}% |
+                  Time: ${comparison.timing[algo]}ms
+                </p>
+                <p style="color: rgba(255,255,255,0.9); margin-top: 0.5rem;">
+                  Top Drug: <strong>${algoData.recommendations[0].drug}</strong> 
+                  (Confidence: ${(algoData.recommendations[0].confidence * 100).toFixed(1)}%)
+                </p>
+              </div>
+            `;
+          });
+          
+          html += '</div></div>';
+          resultsDiv.innerHTML = html;
+          
+          // Create Chart.js instances
+          const ctx1 = document.getElementById('metricsChart');
+          const ctx2 = document.getElementById('timingChart');
+          const ctx3 = document.getElementById('confidenceChart');
+          
+          if (ctx1) {
+            const chart1 = new Chart(ctx1, {
+              type: 'bar',
+              data: charts.metrics,
+              options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                  legend: { labels: { color: 'rgba(255,255,255,0.9)' } }
+                },
+                scales: {
+                  y: { ticks: { color: 'rgba(255,255,255,0.8)' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                  x: { ticks: { color: 'rgba(255,255,255,0.8)' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+              }
+            });
+            chartInstances.push(chart1);
+          }
+          
+          if (ctx2) {
+            const chart2 = new Chart(ctx2, {
+              type: 'bar',
+              data: charts.timing,
+              options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                  legend: { labels: { color: 'rgba(255,255,255,0.9)' } }
+                },
+                scales: {
+                  y: { ticks: { color: 'rgba(255,255,255,0.8)' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                  x: { ticks: { color: 'rgba(255,255,255,0.8)' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+              }
+            });
+            chartInstances.push(chart2);
+          }
+          
+          if (ctx3) {
+            const chart3 = new Chart(ctx3, {
+              type: 'bar',
+              data: charts.confidence,
+              options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                  legend: { labels: { color: 'rgba(255,255,255,0.9)' } }
+                },
+                scales: {
+                  y: { ticks: { color: 'rgba(255,255,255,0.8)' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                  x: { ticks: { color: 'rgba(255,255,255,0.8)' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+              }
+            });
+            chartInstances.push(chart3);
+          }
+        } catch (error) {
+          resultsDiv.innerHTML = `<div style="color: rgba(255,0,0,0.8);">Error loading analytics: ${error.message}</div>`;
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

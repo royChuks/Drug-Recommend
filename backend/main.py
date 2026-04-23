@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from model import predict_drugs, get_model_metrics, compare_algorithms_for_disease, get_algorithm_comparison_chart_data
+import os
 
 app = FastAPI(title="Drug Recommendation API")
 
@@ -49,3 +52,12 @@ def get_analytics_charts(input: PatientProfile):
     """Get chart data for algorithm comparison analytics - specific to patient's disease"""
     chart_data = get_algorithm_comparison_chart_data(input.disease, age=input.age)
     return chart_data
+
+@app.get("/")
+async def serve_frontend():
+    """Serve the frontend HTML file"""
+    frontend_paths = ["../frontend/index.html", "static/index.html", "index.html"]
+    for path in frontend_paths:
+        if os.path.exists(path):
+            return FileResponse(path)
+    return {"error": "Frontend not found", "paths_checked": frontend_paths}
