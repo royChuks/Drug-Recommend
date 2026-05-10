@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Clinical Drug Recommendation System</title>
 
         <!-- Materialize CSS -->
@@ -102,21 +103,33 @@
                 margin: 2rem 0;
                 border: 1px solid rgba(255, 255, 255, 0.18);
                 display: flex;
+                gap: 0.5rem;
+                height: auto;
                 justify-content: space-around;
+                min-height: 56px;
+                width: 100%;
             }
 
             .tabs .tab {
                 flex: 1;
+                height: auto;
+                line-height: 1.2;
                 text-align: center;
             }
 
             .tabs .tab a {
+                align-items: center;
                 color: rgba(255, 255, 255, 0.8) !important;
                 border-radius: 10px;
                 transition: all 0.3s ease;
                 cursor: pointer;
-                display: inline-block;
+                display: flex;
+                justify-content: center;
+                min-height: 44px;
+                padding: 0.75rem 1rem;
                 text-decoration: none;
+                white-space: nowrap;
+                width: 100%;
             }
 
             .tabs .tab a:hover {
@@ -237,6 +250,8 @@
             nav .brand-logo {
                 font-size: 1.5rem;
                 padding: 0;
+                position: static;
+                transform: none;
             }
 
             /* Section Spacing */
@@ -249,7 +264,17 @@
             #section-predict,
             #section-report,
             #section-analytics {
+                display: none;
+            }
+
+            #section-predict.active-panel,
+            #section-report.active-panel,
+            #section-analytics.active-panel {
                 display: block;
+            }
+
+            .tab-panel[hidden] {
+                display: none !important;
             }
 
             /* Form Styling */
@@ -390,18 +415,32 @@
 
             /* Mobile Responsiveness */
             @media only screen and (max-width: 768px) {
+                body {
+                    overflow-x: hidden;
+                }
+
                 .container {
-                    padding: 1rem;
+                    max-width: 100%;
+                    padding: 0.75rem;
                     margin: 0;
+                    width: 100%;
+                }
+
+                body > .container {
+                    margin-top: 1rem !important;
                 }
 
                 /* Navbar responsive */
                 nav {
                     padding: 0.5rem 0;
+                    height: auto;
+                    line-height: 1.2;
                 }
 
                 nav .brand-logo {
-                    font-size: 1rem;
+                    font-size: 1rem !important;
+                    line-height: 1.2;
+                    max-width: 100%;
                     text-align: center;
                 }
 
@@ -412,29 +451,47 @@
                 .tabs {
                     display: flex;
                     flex-direction: row;
+                    gap: 0.5rem;
+                    justify-content: flex-start;
+                    margin: 0 0 1rem;
                     margin-bottom: 1rem;
                     overflow-x: auto;
+                    overflow-y: hidden;
+                    padding: 0.5rem;
+                    position: sticky;
+                    scroll-padding-inline: 0.5rem;
+                    scrollbar-width: thin;
+                    top: 0;
+                    z-index: 20;
                     -webkit-overflow-scrolling: touch;
                     scroll-behavior: smooth;
-                    whitespace: nowrap;
+                    white-space: nowrap;
                 }
 
                 .tabs::-webkit-scrollbar {
-                    display: none;
+                    height: 4px;
+                }
+
+                .tabs::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.35);
+                    border-radius: 999px;
                 }
 
                 .tabs .tab {
-                    flex: 0 0 auto;
-                    min-width: 100px;
+                    flex: 0 0 max-content;
+                    min-width: 132px;
                     text-align: center;
                     margin-bottom: 0;
                 }
 
                 .tabs .tab a {
+                    min-height: 44px;
                     padding: 0.75rem 1rem;
                     border-radius: 10px;
                     margin: 0;
                     font-size: 0.85rem;
+                    line-height: 1.2;
+                    width: 100%;
                 }
 
                 .card-content {
@@ -451,6 +508,7 @@
                 }
 
                 .radio-group label {
+                    display: block;
                     margin: 0.5rem 0;
                     padding: 0.5rem;
                 }
@@ -459,20 +517,43 @@
                     margin: 1rem 0 !important;
                 }
 
+                .input-field input,
+                .input-field select,
+                .select-wrapper input.select-dropdown {
+                    width: 100% !important;
+                }
+
                 .btn-container {
                     margin-top: 1.5rem;
                     text-align: center;
                 }
 
                 .btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    max-width: 100%;
                     padding: 0.6rem 1.5rem;
                     min-width: 180px;
                     font-size: 0.9rem;
+                    white-space: normal;
                 }
 
                 #results .card,
                 #metrics-section .card {
                     margin-bottom: 1rem;
+                }
+
+                #results .card-content > div {
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+                }
+
+                #metrics-result,
+                #analytics-results,
+                #confusion-matrix {
+                    overflow-x: auto;
+                    overflow-wrap: anywhere;
                 }
 
                 /* Analytics charts responsive */
@@ -515,11 +596,13 @@
 
                 .card-title {
                     font-size: 1.2rem;
+                    line-height: 1.3;
                 }
 
                 .btn {
+                    width: 100%;
                     padding: 0.5rem 1rem;
-                    min-width: 160px;
+                    min-width: 0;
                     font-size: 0.85rem;
                 }
 
@@ -528,12 +611,13 @@
                 }
 
                 .tabs .tab a {
-                    padding: 0.5rem 0.5rem;
-                    font-size: 0.7rem;
+                    min-height: 42px;
+                    padding: 0.55rem 0.75rem;
+                    font-size: 0.78rem;
                 }
 
                 .tabs .tab {
-                    min-width: 70px;
+                    min-width: 118px;
                 }
             }
 
@@ -609,6 +693,580 @@
                     grid-template-columns: repeat(2, 1fr) !important;
                 }
             }
+
+            /*
+             * Responsive redesign layer.
+             * This keeps the existing HTML/content structure and replaces the
+             * fragile Materialize/glass overrides with a stable app layout.
+             */
+            :root {
+                --page-bg: #eef3f8;
+                --surface: #ffffff;
+                --surface-muted: #f6f8fb;
+                --surface-strong: #e8f3ee;
+                --primary: #166b4d;
+                --primary-strong: #0d4f39;
+                --primary-soft: #dcefe7;
+                --accent: #315fdc;
+                --text: #1e293b;
+                --muted: #64748b;
+                --border: #d8e1ea;
+                --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+                --radius: 8px;
+            }
+
+            html {
+                background: var(--page-bg);
+                scroll-behavior: smooth;
+            }
+
+            body {
+                background:
+                    radial-gradient(circle at top left, rgba(22, 107, 77, 0.14), transparent 32rem),
+                    linear-gradient(180deg, #f8fbfd 0%, var(--page-bg) 100%) !important;
+                color: var(--text);
+                min-width: 320px;
+                overflow-x: hidden;
+            }
+
+            body::before {
+                content: "";
+                display: block;
+                height: 4px;
+                background: linear-gradient(90deg, var(--primary), var(--accent));
+            }
+
+            nav {
+                background: rgba(255, 255, 255, 0.92) !important;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+                height: auto;
+                line-height: 1.2;
+                padding: 0 !important;
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+
+            nav .container {
+                height: auto;
+                justify-content: flex-start !important;
+                max-width: 1180px !important;
+                padding: 1rem 1.25rem !important;
+                width: min(100%, 1180px);
+            }
+
+            nav .brand-logo {
+                color: var(--primary-strong) !important;
+                display: block;
+                font-size: 1.15rem !important;
+                font-weight: 800;
+                letter-spacing: 0;
+                line-height: 1.25;
+                max-width: none;
+                overflow: visible;
+                position: static;
+                text-shadow: none;
+                transform: none;
+                white-space: normal;
+            }
+
+            body > .container {
+                display: grid;
+                gap: 1.25rem;
+                margin: 0 auto !important;
+                max-width: 1180px;
+                padding: 1.5rem 1.25rem 3rem;
+                width: min(100%, 1180px);
+            }
+
+            .tabs {
+                align-items: center;
+                background: var(--surface) !important;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+                display: grid !important;
+                gap: 0.5rem;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                height: auto !important;
+                margin: 0 !important;
+                min-height: 0;
+                overflow: visible;
+                padding: 0.5rem;
+                position: sticky;
+                top: 68px;
+                z-index: 40;
+            }
+
+            .tabs .indicator {
+                display: none !important;
+            }
+
+            .tabs .tab {
+                display: block;
+                float: none !important;
+                height: auto !important;
+                line-height: 1.2 !important;
+                margin: 0;
+                min-width: 0;
+                text-align: center;
+                width: auto !important;
+            }
+
+            .tabs .tab a {
+                align-items: center;
+                border: 1px solid transparent;
+                border-radius: 6px;
+                color: var(--muted) !important;
+                display: flex !important;
+                font-size: 0.95rem;
+                font-weight: 700;
+                justify-content: center;
+                letter-spacing: 0;
+                line-height: 1.2;
+                min-height: 46px;
+                padding: 0.75rem 1rem !important;
+                text-transform: none;
+                white-space: normal;
+                width: 100%;
+            }
+
+            .tabs .tab a:hover,
+            .tabs .tab a:focus {
+                background: var(--surface-muted) !important;
+                color: var(--primary) !important;
+                outline: none;
+            }
+
+            .tabs .tab a.active,
+            .tabs .tab a[aria-selected="true"] {
+                background: var(--primary) !important;
+                border-color: var(--primary);
+                color: #ffffff !important;
+                box-shadow: 0 8px 20px rgba(22, 107, 77, 0.24);
+            }
+
+            .section {
+                min-height: 0;
+                padding: 0;
+            }
+
+            .tab-panel[hidden] {
+                display: none !important;
+            }
+
+            .tab-panel.active-panel {
+                display: block !important;
+            }
+
+            .card {
+                background: var(--surface) !important;
+                border: 1px solid var(--border) !important;
+                border-radius: var(--radius) !important;
+                box-shadow: var(--shadow) !important;
+                color: var(--text);
+                margin: 0 0 1rem;
+                overflow: hidden;
+                transform: none !important;
+            }
+
+            .card:hover {
+                box-shadow: var(--shadow) !important;
+                transform: none !important;
+            }
+
+            .card-content {
+                padding: 1.5rem !important;
+            }
+
+            .card-title {
+                color: var(--text) !important;
+                display: block;
+                font-size: 1.35rem !important;
+                font-weight: 800 !important;
+                line-height: 1.25;
+                margin: 0 0 1rem !important;
+                text-shadow: none !important;
+            }
+
+            .card-content > div[style*="border-left"] {
+                background: var(--surface-strong) !important;
+                border-left-color: var(--primary) !important;
+                border-radius: var(--radius) !important;
+            }
+
+            .card-content p,
+            .card-content span,
+            .card-content li,
+            #metrics-result,
+            #analytics-results,
+            #confusion-matrix {
+                color: var(--text);
+            }
+
+            .card-content p[style],
+            .card-content span[style],
+            #analytics-results p[style],
+            #metrics-result p[style] {
+                color: var(--text) !important;
+            }
+
+            .card-content strong,
+            .card-content b,
+            #metrics-result b,
+            #confusion-matrix b {
+                color: var(--primary) !important;
+            }
+
+            form {
+                display: grid;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .radio-group {
+                background: var(--surface-muted) !important;
+                border: 1px solid var(--border) !important;
+                border-radius: var(--radius);
+                display: grid;
+                gap: 0.35rem;
+                margin: 0 !important;
+                padding: 1rem !important;
+            }
+
+            .radio-group b {
+                color: var(--text) !important;
+                font-size: 1rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .radio-group label {
+                align-items: center;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                cursor: pointer;
+                display: flex !important;
+                min-height: 44px;
+                margin: 0 !important;
+                padding: 0.65rem 0.75rem !important;
+            }
+
+            .radio-group label:hover {
+                background: var(--primary-soft) !important;
+                border-color: rgba(22, 107, 77, 0.35);
+            }
+
+            [type="radio"] + span {
+                color: var(--text) !important;
+                line-height: 1.35;
+            }
+
+            [type="radio"]:checked + span:after,
+            [type="radio"].with-gap:checked + span:after {
+                background-color: var(--primary) !important;
+                border-color: var(--primary) !important;
+            }
+
+            [type="radio"]:checked + span:before,
+            [type="radio"].with-gap:checked + span:before {
+                border-color: var(--primary) !important;
+            }
+
+            .input-field {
+                margin: 0.5rem 0 0 !important;
+            }
+
+            .input-field input,
+            .input-field select,
+            .select-wrapper input.select-dropdown {
+                background: #ffffff !important;
+                border: 1px solid var(--border) !important;
+                border-radius: 6px !important;
+                box-shadow: none !important;
+                color: var(--text) !important;
+                font-size: 1rem !important;
+                height: 48px !important;
+                margin: 0 !important;
+                padding: 0 0.9rem !important;
+                width: 100% !important;
+            }
+
+            .input-field input:focus,
+            .select-wrapper input.select-dropdown:focus {
+                border-color: var(--primary) !important;
+                box-shadow: 0 0 0 3px rgba(22, 107, 77, 0.12) !important;
+            }
+
+            .input-field label {
+                color: var(--muted) !important;
+                font-size: 0.95rem;
+                left: 0.9rem !important;
+            }
+
+            .input-field input:focus + label,
+            .input-field input:valid + label,
+            .input-field select:focus + label,
+            .input-field label.active {
+                color: var(--primary) !important;
+            }
+
+            .dropdown-content li > a,
+            .dropdown-content li > span {
+                color: var(--text) !important;
+            }
+
+            .btn,
+            button.btn {
+                align-items: center;
+                background: var(--primary) !important;
+                border: 1px solid var(--primary) !important;
+                border-radius: 6px !important;
+                box-shadow: 0 10px 22px rgba(22, 107, 77, 0.22) !important;
+                color: #ffffff !important;
+                display: inline-flex;
+                font-size: 0.95rem;
+                font-weight: 800;
+                gap: 0.5rem;
+                justify-content: center;
+                letter-spacing: 0;
+                min-height: 46px;
+                min-width: 190px;
+                padding: 0 1.2rem !important;
+                text-transform: none;
+            }
+
+            .btn:hover,
+            button.btn:hover {
+                background: var(--primary-strong) !important;
+                box-shadow: 0 12px 26px rgba(13, 79, 57, 0.26) !important;
+                transform: none;
+            }
+
+            .btn .material-icons {
+                line-height: 1;
+                margin-left: 0.25rem;
+            }
+
+            .btn-container {
+                margin-top: 1rem !important;
+                text-align: left;
+            }
+
+            #results,
+            #metrics-result,
+            #analytics-results,
+            #confusion-matrix {
+                margin-top: 1rem !important;
+            }
+
+            #metrics-result {
+                background: var(--surface-muted) !important;
+                border: 1px solid var(--border) !important;
+                border-radius: var(--radius);
+                color: var(--text) !important;
+                font-size: 1rem;
+                line-height: 1.7;
+                padding: 1rem !important;
+            }
+
+            #metrics-result:empty,
+            #analytics-results:empty,
+            #confusion-matrix:empty,
+            #results:empty {
+                display: none;
+            }
+
+            #analytics-results .chart-container,
+            #analytics-results div[style*="border-left"],
+            #metrics-result div[style*="background"],
+            #confusion-matrix div[style*="background"],
+            #results div[style*="background"] {
+                background: var(--surface-muted) !important;
+                border-color: var(--border) !important;
+                color: var(--text) !important;
+            }
+
+            #analytics-results h5,
+            #analytics-results h6,
+            #metrics-result h6,
+            #confusion-matrix h6 {
+                color: var(--text) !important;
+                font-weight: 800;
+                line-height: 1.3;
+            }
+
+            .analytics-grid {
+                display: grid !important;
+                gap: 1rem !important;
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+
+            .chart-container {
+                min-height: 280px !important;
+                overflow: hidden;
+            }
+
+            canvas {
+                max-width: 100% !important;
+            }
+
+            #confusion-matrix {
+                overflow-x: auto;
+            }
+
+            #confusion-matrix table {
+                background: var(--surface) !important;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                max-width: 520px;
+                overflow: hidden;
+            }
+
+            #confusion-matrix td {
+                background: #ffffff !important;
+                border: 1px solid var(--border) !important;
+                color: var(--text) !important;
+            }
+
+            #section-analytics ul[style] {
+                display: grid;
+                gap: 0.75rem;
+                list-style: none;
+                margin: 0;
+                padding-left: 0 !important;
+            }
+
+            #section-analytics li[style] {
+                background: var(--surface-muted) !important;
+                border: 1px solid var(--border);
+                border-left: 4px solid var(--primary) !important;
+                border-radius: var(--radius) !important;
+                color: var(--text) !important;
+                margin: 0 !important;
+                padding: 1rem !important;
+            }
+
+            #section-analytics li span {
+                color: var(--text) !important;
+            }
+
+            .red.lighten-4 {
+                background: #fff1f2 !important;
+                border-color: #fecdd3 !important;
+                color: #9f1239 !important;
+            }
+
+            @media only screen and (min-width: 900px) {
+                form {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .radio-group,
+                .btn-container {
+                    grid-column: 1 / -1;
+                }
+
+                #medical_history,
+                #medical_history + label {
+                    grid-column: 1 / -1;
+                }
+            }
+
+            @media only screen and (max-width: 899px) {
+                nav .container {
+                    justify-content: center !important;
+                    padding: 0.85rem 1rem !important;
+                    text-align: center;
+                }
+
+                body > .container {
+                    padding: 1rem 0.85rem 2rem;
+                }
+
+                .tabs {
+                    display: flex !important;
+                    gap: 0.5rem;
+                    justify-content: flex-start;
+                    overflow-x: auto;
+                    padding: 0.45rem;
+                    scroll-padding-inline: 0.45rem;
+                    scrollbar-width: thin;
+                    top: 54px;
+                    white-space: nowrap;
+                    -webkit-overflow-scrolling: touch;
+                }
+
+                .tabs .tab {
+                    flex: 0 0 auto;
+                    min-width: 150px;
+                }
+
+                .tabs .tab a {
+                    font-size: 0.9rem;
+                    min-height: 44px;
+                    padding: 0.65rem 0.8rem !important;
+                    white-space: nowrap;
+                }
+
+                .card-content {
+                    padding: 1.1rem !important;
+                }
+
+                .analytics-grid {
+                    grid-template-columns: 1fr !important;
+                }
+
+                .chart-container {
+                    min-height: 240px !important;
+                }
+            }
+
+            @media only screen and (max-width: 520px) {
+                nav .brand-logo {
+                    font-size: 0.98rem !important;
+                }
+
+                body > .container {
+                    padding: 0.75rem 0.65rem 1.5rem;
+                }
+
+                .tabs {
+                    border-radius: 7px;
+                    top: 50px;
+                }
+
+                .tabs .tab {
+                    min-width: 136px;
+                }
+
+                .tabs .tab a {
+                    font-size: 0.82rem;
+                }
+
+                .card-title {
+                    font-size: 1.15rem !important;
+                }
+
+                .btn,
+                button.btn {
+                    width: 100%;
+                }
+
+                .radio-group {
+                    padding: 0.75rem !important;
+                }
+
+                .radio-group label {
+                    align-items: flex-start;
+                }
+
+                #results .card-content > div:first-child {
+                    align-items: flex-start !important;
+                    flex-direction: column;
+                }
+            }
         </style>
     </head>
 
@@ -670,7 +1328,7 @@
             </ul>
 
             <!-- SYMPTOM/INPUT SECTION -->
-            <div id="section-predict" class="section">
+            <div id="section-predict" class="section tab-panel active-panel">
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">Patient & Symptom Input</span>
@@ -807,7 +1465,7 @@
             </div>
 
             <!-- MODEL REPORT SECTION -->
-            <div id="section-report" class="section">
+            <div id="section-report" class="section tab-panel" hidden>
                 <div class="card" id="metrics-section">
                     <div class="card-content">
                         <span class="card-title">Model Report</span>
@@ -830,7 +1488,7 @@
             </div>
 
             <!-- ANALYTICS SECTION -->
-            <div id="section-analytics" class="section">
+            <div id="section-analytics" class="section tab-panel" hidden>
                 <div class="card" style="margin-bottom: 2rem">
                     <div class="card-content">
                         <span class="card-title"
@@ -1012,25 +1670,88 @@
                 }, 1000);
 
                 var elems = document.querySelectorAll("select");
-                M.FormSelect.init(elems);
-
-                // Initialize tabs properly with swipe support
-                var tabElems = document.querySelectorAll(".tabs");
-                if (tabElems.length > 0) {
-                    var options = {
-                        swipeable: true,
-                        responsiveThreshold: Infinity, // Make it work on all screen sizes
-                    };
-                    M.Tabs.init(tabElems, options);
+                if (window.M && M.FormSelect) {
+                    M.FormSelect.init(elems);
                 }
 
-                // Enhance tab switching for better mobile experience
-                // Add touch event listeners for better swipe detection on tabs container
-                var tabsContainer = document.querySelector(".tabs");
+                var tabsContainer = document.getElementById("main-tabs");
+                var tabLinks = document.querySelectorAll("#main-tabs .tab a");
+                var sections = document.querySelectorAll(
+                    "#section-predict, #section-report, #section-analytics",
+                );
                 var touchStartX = 0;
                 var touchEndX = 0;
 
+                function activateTab(link, updateHash) {
+                    if (!link) return;
+
+                    var targetId = link.getAttribute("href");
+                    var activeSection = targetId
+                        ? document.querySelector(targetId)
+                        : null;
+                    if (!activeSection) return;
+
+                    tabLinks.forEach(function (tabLink) {
+                        var isActive = tabLink === link;
+                        tabLink.classList.toggle("active", isActive);
+                        tabLink.setAttribute(
+                            "aria-selected",
+                            isActive ? "true" : "false",
+                        );
+                        tabLink.setAttribute("tabindex", isActive ? "0" : "-1");
+                    });
+
+                    sections.forEach(function (section) {
+                        var isActive = section === activeSection;
+                        section.hidden = !isActive;
+                        section.classList.toggle("active-panel", isActive);
+                        section.setAttribute("aria-hidden", isActive ? "false" : "true");
+                    });
+
+                    link.scrollIntoView({
+                        behavior: "smooth",
+                        inline: "center",
+                        block: "nearest",
+                    });
+
+                    if (updateHash) {
+                        history.replaceState(null, "", targetId);
+                    }
+                }
+
+                tabLinks.forEach(function (link) {
+                    link.setAttribute("role", "tab");
+                    link.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        activateTab(link, true);
+                    });
+                    link.addEventListener("keydown", function (event) {
+                        var currentIndex = Array.prototype.indexOf.call(
+                            tabLinks,
+                            link,
+                        );
+                        var nextIndex = currentIndex;
+
+                        if (event.key === "ArrowRight") {
+                            nextIndex = Math.min(
+                                currentIndex + 1,
+                                tabLinks.length - 1,
+                            );
+                        } else if (event.key === "ArrowLeft") {
+                            nextIndex = Math.max(currentIndex - 1, 0);
+                        } else {
+                            return;
+                        }
+
+                        event.preventDefault();
+                        activateTab(tabLinks[nextIndex], true);
+                        tabLinks[nextIndex].focus();
+                    });
+                });
+
                 if (tabsContainer) {
+                    tabsContainer.setAttribute("role", "tablist");
+
                     tabsContainer.addEventListener(
                         "touchstart",
                         function (e) {
@@ -1050,16 +1771,20 @@
                             var threshold = 50; // Minimum swipe distance
 
                             if (Math.abs(diff) > threshold) {
-                                var tabInstance =
-                                    M.Tabs.getInstance(tabsContainer);
-                                if (tabInstance) {
-                                    if (diff > 0) {
-                                        // Swipe left - next tab
-                                        tabInstance.next();
-                                    } else {
-                                        // Swipe right - previous tab
-                                        tabInstance.previous();
+                                var activeIndex = 0;
+                                tabLinks.forEach(function (link, index) {
+                                    if (link.classList.contains("active")) {
+                                        activeIndex = index;
                                     }
+                                });
+                                var nextIndex =
+                                    diff > 0 ? activeIndex + 1 : activeIndex - 1;
+
+                                if (
+                                    nextIndex >= 0 &&
+                                    nextIndex < tabLinks.length
+                                ) {
+                                    activateTab(tabLinks[nextIndex], true);
                                 }
                             }
                         },
@@ -1069,29 +1794,20 @@
 
                 // Ensure first tab is shown properly on load
                 setTimeout(function () {
-                    var firstTabLink = document.querySelector(".tabs .tab a");
-                    if (
-                        firstTabLink &&
-                        !firstTabLink.classList.contains("active")
-                    ) {
-                        document
-                            .querySelectorAll(".tabs .tab a")
-                            .forEach(function (link) {
-                                link.classList.remove("active");
-                            });
-                        firstTabLink.classList.add("active");
-                    }
-
-                    // Show first section, hide others
-                    document
-                        .querySelectorAll(".section")
-                        .forEach(function (section, index) {
-                            if (index === 0) {
-                                section.style.display = "block";
-                            } else {
-                                section.style.display = "none";
-                            }
-                        });
+                    var firstTabLink = document.querySelector("#main-tabs .tab a");
+                    var hashTabLink = window.location.hash
+                        ? document.querySelector(
+                              '#main-tabs .tab a[href="' +
+                                  window.location.hash +
+                                  '"]',
+                          )
+                        : null;
+                    activateTab(
+                        hashTabLink ||
+                            document.querySelector("#main-tabs .tab a.active") ||
+                            firstTabLink,
+                        false,
+                    );
                 }, 100);
 
                 document
