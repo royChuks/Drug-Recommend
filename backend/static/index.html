@@ -25,673 +25,10 @@
                 box-sizing: border-box;
             }
 
-            body {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                min-height: 100vh;
-                font-family:
-                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                    Oxygen, Ubuntu, Cantarell, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-
-            /* Glassmorphism Navbar */
-            nav {
-                background: rgba(46, 139, 87, 0.25) !important;
-                backdrop-filter: blur(20px) saturate(180%);
-                -webkit-backdrop-filter: blur(20px) saturate(180%);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-                padding: 0.75rem 0;
-            }
-
-            nav .brand-logo {
-                font-weight: 600;
-                color: white;
-                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-                font-size: 1.1rem;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 100%;
-                display: block;
-            }
-
-            nav .container {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0 1rem;
-                max-width: 100%;
-            }
-
-            /* Glassmorphism Cards */
-            .card {
-                background: rgba(255, 255, 255, 0.15) !important;
-                backdrop-filter: blur(20px) saturate(180%);
-                -webkit-backdrop-filter: blur(20px) saturate(180%);
-                border-radius: 20px !important;
-                border: 1px solid rgba(255, 255, 255, 0.18);
-                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-                transition: all 0.3s ease;
-                overflow: hidden;
-            }
-
-            .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
-            }
-
-            .card-content {
-                padding: 2rem !important;
-            }
-
-            .card-title {
-                font-weight: 600;
-                color: #2e8b57 !important;
-                text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
-                margin-bottom: 1.5rem;
-            }
-
-            /* Glassmorphism Tabs */
-            .tabs {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                border-radius: 15px;
-                padding: 0.5rem;
-                margin: 2rem 0;
-                border: 1px solid rgba(255, 255, 255, 0.18);
-                display: flex;
-                gap: 0.5rem;
-                height: auto;
-                justify-content: space-around;
-                min-height: 56px;
-                width: 100%;
-            }
-
-            .tabs .tab {
-                flex: 1;
-                height: auto;
-                line-height: 1.2;
-                text-align: center;
-            }
-
-            .tabs .tab a {
-                align-items: center;
-                color: rgba(255, 255, 255, 0.8) !important;
-                border-radius: 10px;
-                transition: all 0.3s ease;
-                cursor: pointer;
-                display: flex;
-                justify-content: center;
-                min-height: 44px;
-                padding: 0.75rem 1rem;
-                text-decoration: none;
-                white-space: nowrap;
-                width: 100%;
-            }
-
-            .tabs .tab a:hover {
-                background: rgba(255, 255, 255, 0.1);
-                color: white !important;
-            }
-
-            .tabs .tab a.active {
-                background: rgba(46, 139, 87, 0.4) !important;
-                color: white !important;
-                font-weight: 600;
-            }
-
-            .tabs .indicator {
-                display: none;
-            }
-
-            /* Input Fields - Glass Style */
-            .input-field input,
-            .input-field select {
-                background: rgba(255, 255, 255, 0.2) !important;
-                border-radius: 10px !important;
-                border: 1px solid rgba(255, 255, 255, 0.3) !important;
-                color: #333 !important;
-                padding: 0.75rem 1rem !important;
-                transition: all 0.3s ease;
-            }
-
-            .input-field input:focus,
-            .input-field select:focus {
-                background: rgba(255, 255, 255, 0.3) !important;
-                border-color: #2e8b57 !important;
-                box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2) !important;
-            }
-
-            .input-field label {
-                color: rgba(255, 255, 255, 0.9) !important;
-                font-weight: 500;
-            }
-
-            .input-field input:focus + label,
-            .input-field input:valid + label,
-            .input-field select:focus + label {
-                color: #2e8b57 !important;
-            }
-
-            /* Buttons - Seagreen Glass */
-            .btn {
-                background: rgba(46, 139, 87, 0.6) !important;
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.3) !important;
-                border-radius: 12px !important;
-                box-shadow: 0 4px 15px 0 rgba(46, 139, 87, 0.3);
-                transition: all 0.3s ease;
-                font-weight: 600;
-                text-transform: none;
-            }
-
-            .btn:hover {
-                background: rgba(46, 139, 87, 0.8) !important;
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px 0 rgba(46, 139, 87, 0.4);
-            }
-
-            .btn:active {
-                transform: translateY(0);
-            }
-
-            /* Radio Buttons */
-            [type="radio"]:checked + span:after {
-                background-color: #2e8b57 !important;
-                border-color: #2e8b57 !important;
-            }
-
-            [type="radio"] + span {
-                color: rgba(255, 255, 255, 0.9) !important;
-            }
-
-            /* Results Cards */
-            #results {
-                margin-top: 2rem;
-            }
-
-            #results .card {
-                margin-top: 1rem;
-                background: rgba(255, 255, 255, 0.2) !important;
-            }
-
-            #results .card:first-child {
-                margin-top: 0;
-            }
-
-            #results .card-title {
-                color: #2e8b57 !important;
-                font-size: 1.5rem;
-            }
-
-            #results .card-content p {
-                margin: 0.5rem 0 0 0;
-            }
-
-            /* Container */
-            .container {
-                max-width: 1200px;
-                padding: 2rem;
-                margin: 0 auto;
-            }
-
-            /* Navbar Container */
-            nav .container {
-                display: flex;
-                align-items: center;
-                padding: 0 2rem;
-            }
-
-            /* Navbar Brand */
-            nav .brand-logo {
-                font-size: 1.5rem;
-                padding: 0;
-                position: static;
-                transform: none;
-            }
-
-            /* Section Spacing */
-            .section {
-                padding: 2rem 0;
-                min-height: 400px;
-            }
-
-            /* Section display control */
-            #section-predict,
-            #section-report,
-            #section-analytics {
-                display: none;
-            }
-
-            #section-predict.active-panel,
-            #section-report.active-panel,
-            #section-analytics.active-panel {
-                display: block;
-            }
-
-            .tab-panel[hidden] {
-                display: none !important;
-            }
-
-            /* Form Styling */
-            form {
-                margin-top: 1.5rem;
-            }
-
-            /* Radio Button Group Styling */
-            .radio-group {
-                margin: 1.5rem 0;
-                padding: 1rem;
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 12px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            .radio-group b {
-                display: block;
-                color: rgba(255, 255, 255, 0.95);
-                font-size: 1.1rem;
-                margin-bottom: 1rem;
-                font-weight: 600;
-            }
-
-            .radio-group label {
-                display: block;
-                margin: 0.75rem 0;
-                padding: 0.5rem;
-                border-radius: 8px;
-                transition: all 0.3s ease;
-            }
-
-            .radio-group label:hover {
-                background: rgba(255, 255, 255, 0.1);
-            }
-
-            /* Input Field Spacing */
-            .input-field {
-                margin: 1.5rem 0 !important;
-            }
-
-            /* Button Container */
-            .btn-container {
-                margin-top: 2rem;
-                text-align: center;
-            }
-
-            .btn {
-                padding: 0.75rem 2rem;
-                min-width: 200px;
-            }
-
-            /* List Items */
-            ul li {
-                color: rgba(255, 255, 255, 0.9) !important;
-                line-height: 1.8;
-            }
-
-            /* Select Dropdown */
-            .select-wrapper input.select-dropdown {
-                background: rgba(255, 255, 255, 0.2) !important;
-                border-radius: 10px !important;
-                border: 1px solid rgba(255, 255, 255, 0.3) !important;
-            }
-
-            /* Metrics Display */
-            #metrics-result {
-                color: rgba(255, 255, 255, 0.95);
-                font-size: 1.1rem;
-                line-height: 2.5;
-                padding: 1.5rem;
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 12px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            #metrics-result b {
-                color: #2e8b57;
-                font-weight: 600;
-                display: inline-block;
-                min-width: 140px;
-            }
-
-            #metrics-result em {
-                color: rgba(255, 255, 255, 0.7);
-                font-style: italic;
-            }
-
-            /* Confusion Matrix Table */
-            #confusion-matrix {
-                margin-top: 2rem;
-            }
-
-            #confusion-matrix b {
-                color: #2e8b57;
-                display: block;
-                margin-bottom: 1rem;
-                font-size: 1.1rem;
-            }
-
-            #confusion-matrix table {
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                border-radius: 10px;
-                overflow: hidden;
-                width: 100%;
-                max-width: 400px;
-                margin: 0 auto;
-            }
-
-            #confusion-matrix td {
-                background: rgba(255, 255, 255, 0.15) !important;
-                color: rgba(255, 255, 255, 0.9) !important;
-                border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                padding: 0.75rem !important;
-                text-align: center;
-                font-weight: 500;
-            }
-
-            /* Error Card */
-            .red.lighten-4 {
-                background: rgba(244, 67, 54, 0.3) !important;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(244, 67, 54, 0.4) !important;
-            }
-
-            /* Smooth Transitions */
             * {
                 transition:
                     background-color 0.3s ease,
                     border-color 0.3s ease;
-            }
-
-            /* Section display control */
-            .section {
-                display: block;
-            }
-
-            /* Mobile Responsiveness */
-            @media only screen and (max-width: 768px) {
-                body {
-                    overflow-x: hidden;
-                }
-
-                .container {
-                    max-width: 100%;
-                    padding: 0.75rem;
-                    margin: 0;
-                    width: 100%;
-                }
-
-                body > .container {
-                    margin-top: 1rem !important;
-                }
-
-                /* Navbar responsive */
-                nav {
-                    padding: 0.5rem 0;
-                    height: auto;
-                    line-height: 1.2;
-                }
-
-                nav .brand-logo {
-                    font-size: 1rem !important;
-                    line-height: 1.2;
-                    max-width: 100%;
-                    text-align: center;
-                }
-
-                nav .container {
-                    padding: 0 0.5rem;
-                }
-
-                .tabs {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 0.5rem;
-                    justify-content: flex-start;
-                    margin: 0 0 1rem;
-                    margin-bottom: 1rem;
-                    overflow-x: auto;
-                    overflow-y: hidden;
-                    padding: 0.5rem;
-                    position: sticky;
-                    scroll-padding-inline: 0.5rem;
-                    scrollbar-width: thin;
-                    top: 0;
-                    z-index: 20;
-                    -webkit-overflow-scrolling: touch;
-                    scroll-behavior: smooth;
-                    white-space: nowrap;
-                }
-
-                .tabs::-webkit-scrollbar {
-                    height: 4px;
-                }
-
-                .tabs::-webkit-scrollbar-thumb {
-                    background: rgba(255, 255, 255, 0.35);
-                    border-radius: 999px;
-                }
-
-                .tabs .tab {
-                    flex: 0 0 max-content;
-                    min-width: 132px;
-                    text-align: center;
-                    margin-bottom: 0;
-                }
-
-                .tabs .tab a {
-                    min-height: 44px;
-                    padding: 0.75rem 1rem;
-                    border-radius: 10px;
-                    margin: 0;
-                    font-size: 0.85rem;
-                    line-height: 1.2;
-                    width: 100%;
-                }
-
-                .card-content {
-                    padding: 1.5rem 1rem !important;
-                }
-
-                .card-title {
-                    font-size: 1.4rem;
-                    margin-bottom: 1rem;
-                }
-
-                .radio-group {
-                    padding: 1rem;
-                }
-
-                .radio-group label {
-                    display: block;
-                    margin: 0.5rem 0;
-                    padding: 0.5rem;
-                }
-
-                .input-field {
-                    margin: 1rem 0 !important;
-                }
-
-                .input-field input,
-                .input-field select,
-                .select-wrapper input.select-dropdown {
-                    width: 100% !important;
-                }
-
-                .btn-container {
-                    margin-top: 1.5rem;
-                    text-align: center;
-                }
-
-                .btn {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    max-width: 100%;
-                    padding: 0.6rem 1.5rem;
-                    min-width: 180px;
-                    font-size: 0.9rem;
-                    white-space: normal;
-                }
-
-                #results .card,
-                #metrics-section .card {
-                    margin-bottom: 1rem;
-                }
-
-                #results .card-content > div {
-                    flex-wrap: wrap;
-                    gap: 0.5rem;
-                }
-
-                #metrics-result,
-                #analytics-results,
-                #confusion-matrix {
-                    overflow-x: auto;
-                    overflow-wrap: anywhere;
-                }
-
-                /* Analytics charts responsive */
-                #analytics-results {
-                    margin-top: 1rem;
-                }
-
-                canvas {
-                    max-width: 100% !important;
-                    height: 250px !important;
-                }
-
-                /* Mobile table for confusion matrix */
-                #confusion-matrix table {
-                    font-size: 0.8rem;
-                }
-
-                #confusion-matrix td {
-                    padding: 0.5rem !important;
-                }
-            }
-
-            @media only screen and (max-width: 480px) {
-                .container {
-                    padding: 0.5rem;
-                }
-
-                /* Navbar - very small screens */
-                nav {
-                    padding: 0.4rem 0;
-                }
-
-                nav .brand-logo {
-                    font-size: 0.85rem;
-                }
-
-                .card-content {
-                    padding: 1rem !important;
-                }
-
-                .card-title {
-                    font-size: 1.2rem;
-                    line-height: 1.3;
-                }
-
-                .btn {
-                    width: 100%;
-                    padding: 0.5rem 1rem;
-                    min-width: 0;
-                    font-size: 0.85rem;
-                }
-
-                canvas {
-                    height: 200px !important;
-                }
-
-                .tabs .tab a {
-                    min-height: 42px;
-                    padding: 0.55rem 0.75rem;
-                    font-size: 0.78rem;
-                }
-
-                .tabs .tab {
-                    min-width: 118px;
-                }
-            }
-
-            @media only screen and (min-width: 769px) and (max-width: 1024px) {
-                .container {
-                    max-width: 95%;
-                    padding: 1.5rem;
-                }
-
-                .card-content {
-                    padding: 1.5rem !important;
-                }
-
-                .tabs {
-                    display: flex;
-                }
-
-                .tabs .tab a {
-                    padding: 0.8rem 1.25rem;
-                    font-size: 0.95rem;
-                }
-
-                .analytics-grid {
-                    grid-template-columns: repeat(2, 1fr) !important;
-                }
-
-                .chart-container {
-                    min-height: 280px;
-                }
-
-                #analytics-results canvas {
-                    max-height: 250px !important;
-                }
-
-                .metrics-grid {
-                    grid-template-columns: repeat(3, 1fr) !important;
-                }
-            }
-
-            @media only screen and (min-width: 1025px) {
-                .container {
-                    max-width: 1200px;
-                }
-
-                .tabs .tab a {
-                    padding: 1rem 2rem;
-                    font-size: 1rem;
-                }
-
-                .analytics-grid {
-                    grid-template-columns: repeat(3, 1fr) !important;
-                }
-
-                .chart-container canvas {
-                    max-height: 280px !important;
-                }
-
-                .metrics-grid {
-                    grid-template-columns: repeat(5, 1fr) !important;
-                }
-            }
-
-            @media only screen and (max-width: 768px) {
-                .analytics-grid {
-                    grid-template-columns: 1fr !important;
-                }
-
-                .chart-container {
-                    min-height: 220px;
-                }
-
-                .metrics-grid {
-                    grid-template-columns: repeat(2, 1fr) !important;
-                }
             }
 
             /*
@@ -1294,23 +631,27 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: var(--page-bg, #eef3f8);
                 z-index: 9999;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             "
         >
-            <div style="text-align: center; color: white">
+            <div style="text-align: center; color: var(--text, #1e293b)">
                 <div style="font-size: 3rem; margin-bottom: 1rem">🩺</div>
-                <div style="font-size: 1.5rem; margin-bottom: 1rem">
+                <div style="font-size: 1.5rem; margin-bottom: 1rem; font-weight: 700; color: var(--primary, #166b4d);">
                     Clinical Drug Recommendation System
                 </div>
-                <div style="font-size: 1rem; opacity: 0.8">
-                    Initializing system...
+                <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem;">
+                    <div style="width: 24px; height: 24px; border: 3px solid var(--border, #d8e1ea); border-top-color: var(--primary, #166b4d); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                    <span style="font-size: 1rem; color: var(--muted, #64748b);">Loading system...</span>
                 </div>
             </div>
         </div>
+        <style>
+            @keyframes spin { to { transform: rotate(360deg); } }
+        </style>
 
         <div class="container" style="margin-top: 40px">
             <ul class="tabs" id="main-tabs">
@@ -1343,7 +684,7 @@
                         >
                             <p
                                 style="
-                                    color: rgba(255, 255, 255, 0.95);
+                                    color: var(--text);
                                     margin: 0;
                                     font-size: 0.9rem;
                                 "
@@ -1505,7 +846,7 @@
                         >
                             <p
                                 style="
-                                    color: rgba(255, 255, 255, 0.95);
+                                    color: var(--text);
                                     margin: 0;
                                     font-size: 0.9rem;
                                 "
@@ -1540,7 +881,7 @@
                                     style="
                                         margin: 1.5rem 0;
                                         padding: 1rem;
-                                        background: rgba(255, 255, 255, 0.05);
+                                        background: var(--surface-muted);
                                         border-radius: 10px;
                                         border-left: 4px solid #2e8b57;
                                     "
@@ -1562,7 +903,7 @@
                                     style="
                                         margin: 1.5rem 0;
                                         padding: 1rem;
-                                        background: rgba(255, 255, 255, 0.05);
+                                        background: var(--surface-muted);
                                         border-radius: 10px;
                                         border-left: 4px solid #2e8b57;
                                     "
@@ -1585,7 +926,7 @@
                                     style="
                                         margin: 1.5rem 0;
                                         padding: 1rem;
-                                        background: rgba(255, 255, 255, 0.05);
+                                        background: var(--surface-muted);
                                         border-radius: 10px;
                                         border-left: 4px solid #2e8b57;
                                     "
@@ -1608,7 +949,7 @@
                                     style="
                                         margin: 1.5rem 0;
                                         padding: 1rem;
-                                        background: rgba(255, 255, 255, 0.05);
+                                        background: var(--surface-muted);
                                         border-radius: 10px;
                                         border-left: 4px solid #2e8b57;
                                     "
@@ -1630,7 +971,7 @@
                                     style="
                                         margin: 1.5rem 0;
                                         padding: 1rem;
-                                        background: rgba(255, 255, 255, 0.05);
+                                        background: var(--surface-muted);
                                         border-radius: 10px;
                                         border-left: 4px solid #2e8b57;
                                     "
@@ -1660,6 +1001,11 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
         <script>
+            // Auto-detect API base URL (works when served by FastAPI or opened standalone)
+            var API_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null')
+                ? 'http://localhost:8000'
+                : '';
+
             document.addEventListener("DOMContentLoaded", function () {
                 // Hide preloader
                 setTimeout(() => {
@@ -1822,67 +1168,76 @@
                             disease: form.disease.value,
                             age: form.age.value,
                             gender: form.gender.value,
-                            weight: form.weight.value,
+                            weight: form.weight.value || null,
                             medical_history: form.medical_history.value,
                             algo: algo,
                         };
                         const resultsDiv = document.getElementById("results");
                         resultsDiv.innerHTML =
-                            '<div class="card" style="margin-top: 1rem;"><div class="card-content"><em style="color: rgba(255,255,255,0.8);">🔄 Processing recommendation...</em></div></div>';
+                            '<div class="card" style="margin-top: 1rem;"><div class="card-content"><em style="color: var(--muted);">🔄 Processing recommendation...</em></div></div>';
 
-                        const response = await fetch("/predict", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(data),
-                        });
-                        const res = await response.json();
-                        if (
-                            !res.recommendations ||
-                            res.recommendations.length === 0
-                        ) {
-                            resultsDiv.innerHTML = `
+                        try {
+                            const response = await fetch(API_BASE + "/predict", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(data),
+                            });
+
+                            if (!response.ok) {
+                                const errData = await response.json().catch(() => ({}));
+                                throw new Error(errData.detail || `Server error (${response.status})`);
+                            }
+
+                            const res = await response.json();
+                            if (
+                                !res.recommendations ||
+                                res.recommendations.length === 0
+                            ) {
+                                resultsDiv.innerHTML = `
             <div class="card red lighten-4" style="margin-top: 1rem;">
-              <div class="card-content" style="color: rgba(255, 255, 255, 0.95);">
+              <div class="card-content" style="color: var(--text);">
                 No strong drug recommendation found.
               </div>
             </div>`;
-                            return;
-                        }
-                        res.recommendations.forEach((item) => {
-                            // Determine age match badge
-                            let ageBadge = "";
-                            let ageBadgeColor = "";
-                            if (item.age_match) {
-                                if (item.age_match === "perfect_match") {
-                                    ageBadge = "✓ Age Match";
-                                    ageBadgeColor = "#4CAF50";
-                                } else if (item.age_match === "mismatch") {
-                                    ageBadge = "⚠ Age Mismatch";
-                                    ageBadgeColor = "#FF9800";
-                                } else {
-                                    ageBadge = "~ Partial Match";
-                                    ageBadgeColor = "#FFC107";
-                                }
+                                return;
                             }
+                            const items = res.recommendations.slice(0, 5);
+                            let html = '';
+                            items.forEach((item) => {
+                                // Determine age match badge
+                                let ageBadge = "";
+                                let ageBadgeColor = "";
+                                if (item.age_match) {
+                                    if (item.age_match === "perfect_match") {
+                                        ageBadge = "✓ Age Match";
+                                        ageBadgeColor = "#4CAF50";
+                                    } else if (item.age_match === "mismatch") {
+                                        ageBadge = "⚠ Age Mismatch";
+                                        ageBadgeColor = "#FF9800";
+                                    } else {
+                                        ageBadge = "~ Partial Match";
+                                        ageBadgeColor = "#FFC107";
+                                    }
+                                }
 
-                            // Age group display
-                            const ageGroupLabels = {
-                                pediatrics: "👶 Pediatrics (1-15)",
-                                adult: "👤 Adult (16-49)",
-                                geriatric: "👴 Geriatric (50+)",
-                            };
-                            const ageGroupLabel =
-                                ageGroupLabels[item.age_group] ||
-                                item.age_group;
+                                // Age group display
+                                const ageGroupLabels = {
+                                    pediatrics: "👶 Pediatrics (1-15)",
+                                    adult: "👤 Adult (16-49)",
+                                    geriatric: "👴 Geriatric (50+)",
+                                };
+                                const ageGroupLabel =
+                                    ageGroupLabels[item.age_group] ||
+                                    item.age_group;
 
-                            resultsDiv.innerHTML += `
+                                html += `
             <div class="card" style="margin-top: 1rem;">
               <div class="card-content">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                   <span class="card-title">${item.drug}</span>
                   ${ageBadge ? `<span style="background: ${ageBadgeColor}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem; font-weight: 600;">${ageBadge}</span>` : ""}
                 </div>
-                <div style="color: rgba(255, 255, 255, 0.9); margin-top: 0.75rem;">
+                <div style="color: var(--text); margin-top: 0.75rem;">
                   <p style="margin: 0.5rem 0;">
                     <strong style="color: #2E8B57;">Adjusted Confidence:</strong>
                     <span style="font-size: 1.2rem; font-weight: 700;">${(item.confidence * 100).toFixed(1)}%</span>
@@ -1890,7 +1245,7 @@
                   ${
                       item.base_confidence
                           ? `
-                    <p style="margin: 0.5rem 0; color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                    <p style="margin: 0.5rem 0; color: var(--muted); font-size: 0.9rem;">
                       Base Confidence: ${(item.base_confidence * 100).toFixed(1)}%
                       ${item.confidence > item.base_confidence ? ' <span style="color: #4CAF50;">↑ Boosted</span>' : ""}
                       ${item.confidence < item.base_confidence ? ' <span style="color: #FF9800;">↓ Reduced</span>' : ""}
@@ -1898,14 +1253,23 @@
                   `
                           : ""
                   }
-                  <p style="margin: 0.5rem 0; color: rgba(255, 255, 255, 0.8);">
+                  <p style="margin: 0.5rem 0; color: var(--muted);">
                     <strong>Age Group:</strong> ${ageGroupLabel}
                   </p>
                 </div>
               </div>
             </div>
           `;
-                        });
+                            });
+                            resultsDiv.innerHTML = html;
+                        } catch (error) {
+                            resultsDiv.innerHTML = `
+            <div class="card red lighten-4" style="margin-top: 1rem;">
+              <div class="card-content" style="color: var(--text);">
+                ⚠️ ${error.message}
+              </div>
+            </div>`;
+                        }
                     });
                 // METRICS button handler
                 document
@@ -1930,69 +1294,78 @@
                         const confMatrixDiv =
                             document.getElementById("confusion-matrix");
                         metricsDiv.innerHTML =
-                            '<em style="color: rgba(255,255,255,0.8);">🔄 Loading metrics...</em>';
+                            '<em style="color: var(--muted);">🔄 Loading metrics...</em>';
                         confMatrixDiv.innerHTML = "";
-                        const res = await fetch(
-                            `/metrics/${encodeURIComponent(disease)}/${algo}`,
-                        );
-                        const data = await res.json();
 
-                        // Check for errors
-                        if (data.error) {
-                            metricsDiv.innerHTML = `<div class="card red lighten-4" style="color: rgba(255, 255, 255, 0.95);"><div class="card-content">⚠️ ${data.error}</div></div>`;
-                            return;
-                        }
+                        try {
+                            const response = await fetch(
+                                API_BASE + `/metrics/${encodeURIComponent(disease)}/${algo}`,
+                            );
 
-                        // Enhanced metrics display
+                            if (!response.ok) {
+                                const errData = await response.json().catch(() => ({}));
+                                metricsDiv.innerHTML = `<div class="card red lighten-4" style="color: var(--text);"><div class="card-content">⚠️ ${errData.error || `Server error (${response.status})`}</div></div>`;
+                                return;
+                            }
+
+                            const data = await response.json();
+
+                            // Check for errors
+                            if (data.error) {
+                                metricsDiv.innerHTML = `<div class="card red lighten-4" style="color: var(--text);"><div class="card-content">⚠️ ${data.error}</div></div>`;
+                                return;
+                            }
+
+                            // Enhanced metrics display
                         let metricsHtml = `
           <div style="margin-bottom: 2rem;">
             <h6 style="color: #2E8B57; margin-bottom: 1rem;">📊 ${data.algorithm.toUpperCase()} Analysis for: <strong>${disease}</strong></h6>
-            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 1rem;">Data Scope: ${data.data_scope}</p>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem;">Data Scope: ${data.data_scope}</p>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
               <div style="background: rgba(46, 139, 87, 0.1); padding: 1rem; border-radius: 10px;">
                 <strong style="color: #2E8B57;">Model Type</strong><br>
-                <span style="color: rgba(255,255,255,0.9);">${data.model_characteristics.algorithm_type}</span>
+                <span style="color: var(--text);">${data.model_characteristics.algorithm_type}</span>
               </div>
               <div style="background: rgba(46, 139, 87, 0.1); padding: 1rem; border-radius: 10px;">
                 <strong style="color: #2E8B57;">Learning Paradigm</strong><br>
-                <span style="color: rgba(255,255,255,0.9);">${data.model_characteristics.learning_paradigm}</span>
+                <span style="color: var(--text);">${data.model_characteristics.learning_paradigm}</span>
               </div>
               <div style="background: rgba(46, 139, 87, 0.1); padding: 1rem; border-radius: 10px;">
                 <strong style="color: #2E8B57;">Reliability</strong><br>
-                <span style="color: rgba(255,255,255,0.9);">${data.predictability_insights.model_reliability}</span>
+                <span style="color: var(--text);">${data.predictability_insights.model_reliability}</span>
               </div>
             </div>
 
             <h6 style="color: #2E8B57; margin: 2rem 0 1rem 0;">Performance Metrics</h6>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+              <div style="background: var(--surface-muted); padding: 1rem; border-radius: 8px; text-align: center;">
                 <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${(data.basic_metrics.precision * 100).toFixed(1)}%</div>
-                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Precision</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">Precision</div>
               </div>
-              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+              <div style="background: var(--surface-muted); padding: 1rem; border-radius: 8px; text-align: center;">
                 <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${(data.basic_metrics.recall * 100).toFixed(1)}%</div>
-                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Recall</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">Recall</div>
               </div>
-              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+              <div style="background: var(--surface-muted); padding: 1rem; border-radius: 8px; text-align: center;">
                 <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${(data.basic_metrics.f1_score * 100).toFixed(1)}%</div>
-                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">F1 Score</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">F1 Score</div>
               </div>
-              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+              <div style="background: var(--surface-muted); padding: 1rem; border-radius: 8px; text-align: center;">
                 <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${(data.basic_metrics.accuracy * 100).toFixed(1)}%</div>
-                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Accuracy</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">Accuracy</div>
               </div>
-              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center;">
+              <div style="background: var(--surface-muted); padding: 1rem; border-radius: 8px; text-align: center;">
                 <div style="font-size: 1.2rem; font-weight: bold; color: #FF9800;">${data.basic_metrics.hamming_loss.toFixed(3)}</div>
-                <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Hamming Loss</div>
+                <div style="color: var(--muted); font-size: 0.9rem;">Hamming Loss</div>
               </div>
             </div>
 
             <h6 style="color: #2E8B57; margin: 2rem 0 1rem 0;">🔗 Correlation Analysis</h6>
 
             <!-- Feature Importance Summary -->
-            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #2E8B57;">
-              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">📊 Feature-Drug Relationships</h6>
-              <p style="color: rgba(255,255,255,0.8); margin: 0.5rem 0; font-size: 0.9rem;">
+            <div style="background: var(--surface-muted); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 4px solid #2E8B57;">
+              <h6 style="color: var(--text); margin-bottom: 0.75rem;">📊 Feature-Drug Relationships</h6>
+              <p style="color: var(--muted); margin: 0.5rem 0; font-size: 0.9rem;">
                 <strong>Total Features Analyzed:</strong> ${data.correlation_analysis.total_features_analyzed}
               </p>
 
@@ -2003,11 +1376,11 @@
                         ([drug, stats]) => `
                   <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
                     <div style="color: #2E8B57; font-weight: 600; margin-bottom: 0.5rem;">💊 ${drug}</div>
-                    <div style="font-size: 0.85rem; color: rgba(255,255,255,0.9);">
+                    <div style="font-size: 0.85rem; color: var(--text);">
                       <div>Mean Corr: ${(stats.mean_correlation * 100).toFixed(1)}%</div>
                       <div>Max Corr: ${(stats.max_correlation * 100).toFixed(1)}%</div>
                       <div>Strength: <strong style="color: ${stats.correlation_strength === "Strong" ? "#4CAF50" : stats.correlation_strength === "Moderate" ? "#FFC107" : "#FF9800"}">${stats.correlation_strength}</strong></div>
-                      <div style="color: rgba(255,255,255,0.7); margin-top: 0.25rem; font-size: 0.8rem;">Features: ${stats.num_features_analyzed}</div>
+                      <div style="color: var(--muted); margin-top: 0.25rem; font-size: 0.8rem;">Features: ${stats.num_features_analyzed}</div>
                     </div>
                   </div>
                 `,
@@ -2017,8 +1390,8 @@
             </div>
 
             <!-- Drug-Drug Similarity -->
-            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; border-left: 4px solid #2E8B57;">
-              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">🤝 Drug-Drug Similarity (Top Pairs)</h6>
+            <div style="background: var(--surface-muted); padding: 1rem; border-radius: 10px; border-left: 4px solid #2E8B57;">
+              <h6 style="color: var(--text); margin-bottom: 0.75rem;">🤝 Drug-Drug Similarity (Top Pairs)</h6>
               ${
                   data.correlation_analysis.top_similar_drug_pairs &&
                   data.correlation_analysis.top_similar_drug_pairs.length > 0
@@ -2029,12 +1402,12 @@
                       .map(
                           (pair) => `
                     <div style="background: rgba(70, 130, 180, 0.1); padding: 0.75rem; border-radius: 8px;">
-                      <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-bottom: 0.25rem;">
+                      <div style="color: var(--text); font-size: 0.9rem; margin-bottom: 0.25rem;">
                         <strong>${pair.drug_1}</strong> ↔ <strong>${pair.drug_2}</strong>
                       </div>
-                      <div style="font-size: 0.85rem; color: rgba(255,255,255,0.8);">
+                      <div style="font-size: 0.85rem; color: var(--muted);">
                         <div>Similarity: <strong style="color: #4CAF50;">${(pair.similarity * 100).toFixed(1)}%</strong></div>
-                        <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem;">Co-occurrence: ${(pair.cooccurrence_rate * 100).toFixed(2)}%</div>
+                        <div style="color: var(--muted); font-size: 0.8rem;">Co-occurrence: ${(pair.cooccurrence_rate * 100).toFixed(2)}%</div>
                       </div>
                     </div>
                   `,
@@ -2043,7 +1416,7 @@
                 </div>
               `
                       : `
-                <p style="color: rgba(255,255,255,0.7);">No significant drug-drug relationships found for this disease.</p>
+                <p style="color: var(--muted);">No significant drug-drug relationships found for this disease.</p>
               `
               }
             </div>
@@ -2057,48 +1430,48 @@
           <h6 style="color: #2E8B57; margin-bottom: 1rem;">📊 Confusion Matrix Analysis</h6>
 
           <!-- Overall Summary -->
-          <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 2rem; border-left: 4px solid #2E8B57;">
-            <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">📈 Overall Diagnostic Summary</h6>
+          <div style="background: var(--surface-muted); padding: 1rem; border-radius: 10px; margin-bottom: 2rem; border-left: 4px solid #2E8B57;">
+            <h6 style="color: var(--text); margin-bottom: 1rem;">📈 Overall Diagnostic Summary</h6>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
               <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
-                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">True Positives</div>
+                <div style="font-size: 0.8rem; color: var(--muted);">True Positives</div>
                 <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${data.confusion_matrix_analysis.summary.total_true_positives}</div>
               </div>
               <div style="background: rgba(244, 67, 54, 0.1); padding: 0.75rem; border-radius: 8px;">
-                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">False Positives</div>
+                <div style="font-size: 0.8rem; color: var(--muted);">False Positives</div>
                 <div style="font-size: 1.5rem; font-weight: bold; color: #FF6B6B;">${data.confusion_matrix_analysis.summary.total_false_positives}</div>
               </div>
               <div style="background: rgba(244, 67, 54, 0.1); padding: 0.75rem; border-radius: 8px;">
-                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">False Negatives</div>
+                <div style="font-size: 0.8rem; color: var(--muted);">False Negatives</div>
                 <div style="font-size: 1.5rem; font-weight: bold; color: #FF6B6B;">${data.confusion_matrix_analysis.summary.total_false_negatives}</div>
               </div>
               <div style="background: rgba(46, 139, 87, 0.1); padding: 0.75rem; border-radius: 8px;">
-                <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">True Negatives</div>
+                <div style="font-size: 0.8rem; color: var(--muted);">True Negatives</div>
                 <div style="font-size: 1.5rem; font-weight: bold; color: #2E8B57;">${data.confusion_matrix_analysis.summary.total_true_negatives}</div>
               </div>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; font-size: 0.9rem;">
-              <div><strong style="color: #2E8B57;">Avg Precision:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_precision_per_label * 100).toFixed(2)}%</span></div>
-              <div><strong style="color: #2E8B57;">Avg Recall:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_recall_per_label * 100).toFixed(2)}%</span></div>
-              <div><strong style="color: #2E8B57;">Avg Specificity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_specificity_per_label * 100).toFixed(2)}%</span></div>
-              <div><strong style="color: #2E8B57;">Avg F1-Score:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.average_f1_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg Precision:</strong> <span style="color: var(--text);">${(data.confusion_matrix_analysis.summary.average_precision_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg Recall:</strong> <span style="color: var(--text);">${(data.confusion_matrix_analysis.summary.average_recall_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg Specificity:</strong> <span style="color: var(--text);">${(data.confusion_matrix_analysis.summary.average_specificity_per_label * 100).toFixed(2)}%</span></div>
+              <div><strong style="color: #2E8B57;">Avg F1-Score:</strong> <span style="color: var(--text);">${(data.confusion_matrix_analysis.summary.average_f1_per_label * 100).toFixed(2)}%</span></div>
             </div>
 
-            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
-              <h6 style="color: rgba(255,255,255,0.9); margin-bottom: 0.75rem;">🔬 Clinical Metrics</h6>
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+              <h6 style="color: var(--text); margin-bottom: 0.75rem;">🔬 Clinical Metrics</h6>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; font-size: 0.9rem;">
-                <div><strong style="color: #2E8B57;">Sensitivity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.overall_sensitivity * 100).toFixed(2)}%</span></div>
-                <div><strong style="color: #2E8B57;">Specificity:</strong> <span style="color: rgba(255,255,255,0.9);">${(data.confusion_matrix_analysis.summary.overall_specificity * 100).toFixed(2)}%</span></div>
-                <div><strong style="color: #2E8B57;">Class Balance:</strong> <span style="color: rgba(255,255,255,0.9);">${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.balance_assessment}</span></div>
+                <div><strong style="color: #2E8B57;">Sensitivity:</strong> <span style="color: var(--text);">${(data.confusion_matrix_analysis.summary.overall_sensitivity * 100).toFixed(2)}%</span></div>
+                <div><strong style="color: #2E8B57;">Specificity:</strong> <span style="color: var(--text);">${(data.confusion_matrix_analysis.summary.overall_specificity * 100).toFixed(2)}%</span></div>
+                <div><strong style="color: #2E8B57;">Class Balance:</strong> <span style="color: var(--text);">${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.balance_assessment}</span></div>
                 <div><strong style="color: #2E8B57;">False Positives:</strong> <span style="color: ${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.false_positive_concern === "High" ? "#FF6B6B" : "#4CAF50"};">${data.confusion_matrix_analysis.summary.model_diagnostic_assessment.false_positive_concern}</span></div>
               </div>
             </div>
           </div>
 
           <!-- Per-Label Details -->
-          <h6 style="color: rgba(255,255,255,0.9); margin: 2rem 0 1rem 0;">📋 Per-Label Detailed Analysis (First 5 Labels)</h6>
+          <h6 style="color: var(--text); margin: 2rem 0 1rem 0;">📋 Per-Label Detailed Analysis (First 5 Labels)</h6>
         `;
 
                         // Show detailed analysis for first 5 labels
@@ -2109,7 +1482,7 @@
                             );
                         labelsToShow.forEach((labelData) => {
                             confHtml += `
-            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 3px solid #2E8B57;">
+            <div style="background: var(--surface-muted); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 3px solid #2E8B57;">
               <h6 style="color: #2E8B57; margin-bottom: 0.75rem;">💊 ${labelData.label}</h6>
 
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 0.5rem; font-size: 0.85rem; margin-bottom: 0.75rem;">
@@ -2126,7 +1499,7 @@
                 <div><strong style="color: #2E8B57;">Specificity:</strong> ${(labelData.specificity * 100).toFixed(2)}%</div>
               </div>
 
-              <div style="margin-top: 0.5rem; font-size: 0.85rem; color: rgba(255,255,255,0.7);">
+              <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted);">
                 <strong>False Positive Rate:</strong> ${(labelData.false_positive_rate * 100).toFixed(2)}% |
                 <strong>False Negative Rate:</strong> ${(labelData.false_negative_rate * 100).toFixed(2)}% |
                 <strong>Support:</strong> ${labelData.support}
@@ -2136,6 +1509,9 @@
                         });
 
                         confMatrixDiv.innerHTML = confHtml;
+                        } catch (error) {
+                            metricsDiv.innerHTML = `<div class="card red lighten-4" style="color: var(--text);"><div class="card-content">⚠️ Error loading metrics: ${error.message}</div></div>`;
+                        }
                     });
 
                 // ANALYTICS: Compare Algorithms button handler
@@ -2157,12 +1533,12 @@
                         const resultsDiv =
                             document.getElementById("analytics-results");
                         resultsDiv.innerHTML =
-                            '<div class="card"><div class="card-content"><em style="color: rgba(255,255,255,0.9);">🔄 Loading analytics...</em></div></div>';
+                            '<div class="card"><div class="card-content"><em style="color: var(--text);">🔄 Loading analytics...</em></div></div>';
 
                         try {
                             const data = {
                                 disease: disease,
-                                age: parseInt(age) || null,
+                                age: parseInt(age) || 30,
                                 gender: form.gender.value || "male",
                                 weight: form.weight.value || null,
                                 medical_history:
@@ -2170,13 +1546,27 @@
                                 algo: "lr",
                             };
 
-                            const response = await fetch("/analytics/charts", {
+                            const response = await fetch(API_BASE + "/analytics/charts", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify(data),
                             });
 
+                            // Handle API errors - check response.ok BEFORE parsing JSON
+                            if (!response.ok) {
+                                const errData = await response.json().catch(() => ({}));
+                                throw new Error(errData.error || `Server error (${response.status})`);
+                            }
+
                             const chartData = await response.json();
+                            if (chartData.error) {
+                                throw new Error(chartData.error);
+                            }
+
+                            // Validate response structure
+                            if (!chartData.charts || !chartData.comparison) {
+                                throw new Error("Invalid analytics response: missing charts or comparison data");
+                            }
 
                             // Destroy existing charts
                             chartInstances.forEach((chart) => chart.destroy());
@@ -2189,20 +1579,20 @@
                             let html = `
             <div style="margin-top: 2rem;">
               <h5 style="color: #2E8B57; margin-bottom: 1rem;">Comparison Results for: ${comparison.disease}</h5>
-              ${comparison.age ? `<p style="color: rgba(255,255,255,0.8);">Patient Age: ${comparison.age} years</p>` : ""}
+              ${comparison.age ? `<p style="color: var(--muted);">Patient Age: ${comparison.age} years</p>` : ""}
 
               <div class="analytics-grid" style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1.5rem;">
-                <div class="chart-container" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 15px; min-height: 250px;">
+                <div class="chart-container" style="background: var(--surface-muted); padding: 1rem; border-radius: 15px; min-height: 250px;">
                   <h6 style="color: #2E8B57; margin-bottom: 0.75rem;">Performance Metrics Comparison</h6>
                   <canvas id="metricsChart" style="max-height: 200px;"></canvas>
                 </div>
 
-                <div class="chart-container" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 15px; min-height: 250px;">
+                <div class="chart-container" style="background: var(--surface-muted); padding: 1rem; border-radius: 15px; min-height: 250px;">
                   <h6 style="color: #2E8B57; margin-bottom: 0.75rem;">Prediction Speed (ms)</h6>
                   <canvas id="timingChart" style="max-height: 200px;"></canvas>
                 </div>
 
-                <div class="chart-container" style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 15px; min-height: 250px;">
+                <div class="chart-container" style="background: var(--surface-muted); padding: 1rem; border-radius: 15px; min-height: 250px;">
                   <h6 style="color: #2E8B57; margin-bottom: 0.75rem;">Top Confidence Scores</h6>
                   <canvas id="confidenceChart" style="max-height: 200px;"></canvas>
                 </div>
@@ -2219,15 +1609,15 @@
                                         comparison.algorithms[algo];
                                     const metrics = comparison.metrics[algo];
                                     html += `
-              <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #2E8B57;">
+              <div style="background: var(--surface-muted); padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #2E8B57;">
                 <b style="color: #2E8B57; font-size: 1.1rem;">${algo.toUpperCase()}</b>
-                <p style="color: rgba(255,255,255,0.8); margin: 0.5rem 0;">
+                <p style="color: var(--muted); margin: 0.5rem 0;">
                   Precision: ${(metrics.precision * 100).toFixed(2)}% |
                   Recall: ${(metrics.recall * 100).toFixed(2)}% |
                   F1: ${(metrics.f1_score * 100).toFixed(2)}% |
                   Time: ${comparison.timing[algo]}ms
                 </p>
-                <p style="color: rgba(255,255,255,0.9); margin-top: 0.5rem;">
+                <p style="color: var(--text); margin-top: 0.5rem;">
                   Top Drug: <strong>${algoData.recommendations[0].drug}</strong>
                   (Confidence: ${(algoData.recommendations[0].confidence * 100).toFixed(1)}%)
                 </p>
@@ -2256,25 +1646,25 @@
                                         plugins: {
                                             legend: {
                                                 labels: {
-                                                    color: "rgba(255,255,255,0.9)",
+                                                    color: "#1e293b",
                                                 },
                                             },
                                         },
                                         scales: {
                                             y: {
                                                 ticks: {
-                                                    color: "rgba(255,255,255,0.8)",
+                                                    color: "#475569",
                                                 },
                                                 grid: {
-                                                    color: "rgba(255,255,255,0.1)",
+                                                    color: "rgba(0,0,0,0.08)",
                                                 },
                                             },
                                             x: {
                                                 ticks: {
-                                                    color: "rgba(255,255,255,0.8)",
+                                                    color: "#475569",
                                                 },
                                                 grid: {
-                                                    color: "rgba(255,255,255,0.1)",
+                                                    color: "rgba(0,0,0,0.08)",
                                                 },
                                             },
                                         },
@@ -2293,25 +1683,25 @@
                                         plugins: {
                                             legend: {
                                                 labels: {
-                                                    color: "rgba(255,255,255,0.9)",
+                                                    color: "#1e293b",
                                                 },
                                             },
                                         },
                                         scales: {
                                             y: {
                                                 ticks: {
-                                                    color: "rgba(255,255,255,0.8)",
+                                                    color: "#475569",
                                                 },
                                                 grid: {
-                                                    color: "rgba(255,255,255,0.1)",
+                                                    color: "rgba(0,0,0,0.08)",
                                                 },
                                             },
                                             x: {
                                                 ticks: {
-                                                    color: "rgba(255,255,255,0.8)",
+                                                    color: "#475569",
                                                 },
                                                 grid: {
-                                                    color: "rgba(255,255,255,0.1)",
+                                                    color: "rgba(0,0,0,0.08)",
                                                 },
                                             },
                                         },
@@ -2330,25 +1720,25 @@
                                         plugins: {
                                             legend: {
                                                 labels: {
-                                                    color: "rgba(255,255,255,0.9)",
+                                                    color: "#1e293b",
                                                 },
                                             },
                                         },
                                         scales: {
                                             y: {
                                                 ticks: {
-                                                    color: "rgba(255,255,255,0.8)",
+                                                    color: "#475569",
                                                 },
                                                 grid: {
-                                                    color: "rgba(255,255,255,0.1)",
+                                                    color: "rgba(0,0,0,0.08)",
                                                 },
                                             },
                                             x: {
                                                 ticks: {
-                                                    color: "rgba(255,255,255,0.8)",
+                                                    color: "#475569",
                                                 },
                                                 grid: {
-                                                    color: "rgba(255,255,255,0.1)",
+                                                    color: "rgba(0,0,0,0.08)",
                                                 },
                                             },
                                         },
@@ -2357,7 +1747,7 @@
                                 chartInstances.push(chart3);
                             }
                         } catch (error) {
-                            resultsDiv.innerHTML = `<div style="color: rgba(255,0,0,0.8);">Error loading analytics: ${error.message}</div>`;
+                            resultsDiv.innerHTML = `<div style="color: #dc2626; font-weight: 500;">Error loading analytics: ${error.message}</div>`;
                         }
                     });
             });
