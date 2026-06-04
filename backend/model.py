@@ -201,16 +201,36 @@ def predict_drugs(disease: str, threshold=0.02, algo='lr', top_k_fallback=3, age
     # Sort by confidence (already sorted if fallback, but ensure it)
     return sorted(results, key=lambda x: x["confidence"], reverse=True)
 
+def find_closest_disease(query: str, min_similarity: float = 0.1):
+    """Find the closest disease name in training data using TF-IDF cosine similarity"""
+    if vectorizer is None or X is None:
+        return None, 0.0
+    query_vec = vectorizer.transform([query.lower().strip()])
+    from sklearn.metrics.pairwise import cosine_similarity
+    similarities = cosine_similarity(query_vec, X)[0]
+    best_idx = int(np.argmax(similarities))
+    best_score = float(similarities[best_idx])
+    if best_score >= min_similarity:
+        return grouped.iloc[best_idx]['disease_name'], best_score
+    return None, 0.0
+
 def get_disease_specific_indices(disease: str):
     """Get training data indices for a specific disease"""
     load_data()
     disease_lower = disease.lower().strip()
-    disease_mask = df['disease_name'].str.lower().str.strip() == disease_lower
-    indices = np.where(disease_mask.values)[0]
     
-    # Map grouped data indices to original X,y indices
+    # Exact match first
     grouped_disease_idx = grouped[grouped['disease_name'] == disease_lower].index
-    return grouped_disease_idx.tolist() if len(grouped_disease_idx) > 0 else None
+    if len(grouped_disease_idx) > 0:
+        return grouped_disease_idx.tolist(), disease_lower
+    
+    # Fuzzy match fallback using TF-IDF cosine similarity
+    closest, score = find_closest_disease(disease_lower)
+    if closest:
+        closest_idx = grouped[grouped['disease_name'] == closest].index
+        return closest_idx.tolist(), closest
+    
+    return None, None
 
 def get_model_metrics(algo='lr', disease: str = None):
     """Get model evaluation metrics. If disease specified, metrics are for that disease only."""
@@ -218,14 +238,16 @@ def get_model_metrics(algo='lr', disease: str = None):
     
     # Use disease-specific data if provided
     if disease:
-        disease_idx = get_disease_specific_indices(disease)
+        disease_idx, matched_disease = get_disease_specific_indices(disease)
         if disease_idx is None or len(disease_idx) == 0:
-            return {"error": f"Disease '{disease}' not found in training data", "algorithm": algo}
-        
-        # Get disease-specific training data
-        X_disease = X[disease_idx]
-        y_disease = y[disease_idx]
-        scope = f"disease: {disease}"
+            X_disease = X
+            y_disease = y
+            scope = f"all diseases (no match for '{disease}', showing overall metrics)"
+        else:
+            X_disease = X[disease_idx]
+            y_disease = y[disease_idx]
+            is_fuzzy = disease.lower().strip() != matched_disease
+            scope = f"disease: {matched_disease}" + (f" (fuzzy match for '{disease}')" if is_fuzzy else "")
     else:
         X_disease = X
         y_disease = y
@@ -548,7 +570,7 @@ def compare_algorithms_for_disease(disease: str, age: int = None):
             })
 
         # Get disease-specific model metrics
-        disease_idx = get_disease_specific_indices(disease)
+        disease_idx, matched_disease = get_disease_specific_indices(disease)
         if disease_idx and len(disease_idx) > 0:
             X_disease = X[disease_idx]
             y_disease = y[disease_idx]
